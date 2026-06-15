@@ -1,5 +1,6 @@
 "use client";
 import { ForecastChart } from "@/components/ForecastChart";
+import { PageHeader } from "@/components/PageHeader";
 import { StatCard } from "@/components/StatCard";
 import { useForecast } from "@/hooks/useApi";
 
@@ -9,18 +10,17 @@ export default function ForecastPage() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold">Hotspot Forecast</h1>
-        <p className="text-slate-400 text-sm">
-          LightGBM next-window violation-intensity forecast (temporal holdout).
-        </p>
-      </div>
+      <PageHeader
+        tag="Predictive Engine"
+        title="Hotspot Forecast"
+        subtitle="LightGBM next-window violation-intensity forecast (temporal holdout)."
+      />
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <StatCard label="Model" value={String(metrics.backend ?? "—")} />
-        <StatCard label="MAE" value={metrics.mae ?? "—"} />
-        <StatCard label="RMSE" value={metrics.rmse ?? "—"} />
-        <StatCard label="MASE" value={metrics.mase_vs_seasonal_naive ?? "—"} sub="< 1 beats naïve" />
+        <StatCard label="Model" value={String(metrics.backend ?? "—")} accent="violet" />
+        <StatCard label="MAE" value={metrics.mae ?? "—"} accent="cyan" />
+        <StatCard label="RMSE" value={metrics.rmse ?? "—"} accent="cyan" />
+        <StatCard label="MASE" value={metrics.mase_vs_seasonal_naive ?? "—"} sub="< 1 beats naïve" accent="lime" pulse />
       </div>
 
       {isLoading && <div className="text-slate-400">Loading forecast…</div>}

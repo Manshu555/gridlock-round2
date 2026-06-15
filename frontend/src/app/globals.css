@@ -4,26 +4,115 @@
 
 :root {
   color-scheme: dark;
+  --c-cyan: #22d3ee;
+  --c-magenta: #ff2bd6;
+  --c-violet: #a855f7;
+  --c-lime: #adff2f;
 }
 
-body {
-  @apply bg-ink text-slate-100;
+@layer base {
+  body {
+    @apply bg-ink text-[#dbe9ff];
+    font-family: "Rajdhani", ui-sans-serif, system-ui, sans-serif;
+    background-color: #05070f;
+    /* layered neon ambience + faint smart-city grid */
+    background-image:
+      radial-gradient(900px 500px at 12% -10%, rgba(34, 211, 238, 0.10), transparent 60%),
+      radial-gradient(800px 500px at 100% 0%, rgba(255, 43, 214, 0.08), transparent 55%),
+      radial-gradient(700px 600px at 50% 120%, rgba(168, 85, 247, 0.08), transparent 60%),
+      linear-gradient(rgba(34, 211, 238, 0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(34, 211, 238, 0.05) 1px, transparent 1px);
+    background-size: 100% 100%, 100% 100%, 100% 100%, 44px 44px, 44px 44px;
+    background-attachment: fixed;
+    min-height: 100vh;
+  }
+
+  /* subtle moving scanline overlay (~4% opacity) */
+  body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 50;
+    background: repeating-linear-gradient(
+      to bottom,
+      rgba(34, 211, 238, 0.04) 0px,
+      rgba(34, 211, 238, 0.04) 1px,
+      transparent 2px,
+      transparent 4px
+    );
+    mix-blend-mode: screen;
+    opacity: 0.5;
+  }
+
+  h1, h2, h3 { letter-spacing: 0.02em; }
 }
 
-.card {
-  @apply bg-panel rounded-xl border border-slate-800 p-4 shadow-lg;
+@layer components {
+  /* Neon glass panel */
+  .card {
+    @apply rounded-xl p-4;
+    background: linear-gradient(180deg, rgba(13, 20, 38, 0.72), rgba(8, 12, 24, 0.72));
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(34, 211, 238, 0.22);
+    box-shadow:
+      inset 0 1px 0 rgba(34, 211, 238, 0.10),
+      0 0 0 1px rgba(34, 211, 238, 0.05),
+      0 10px 34px rgba(0, 0, 0, 0.55);
+  }
+  .card-magenta {
+    border-color: rgba(255, 43, 214, 0.28);
+    box-shadow: inset 0 1px 0 rgba(255, 43, 214, 0.10), 0 10px 34px rgba(0, 0, 0, 0.55);
+  }
+
+  /* Glowing data number */
+  .stat {
+    @apply text-3xl font-bold font-mono text-neon-cyan;
+    text-shadow: 0 0 10px rgba(34, 211, 238, 0.65);
+  }
+
+  /* HUD page title */
+  .hud-title {
+    @apply font-display uppercase tracking-widest text-2xl font-bold text-[#eafcff];
+    text-shadow: 0 0 14px rgba(34, 211, 238, 0.55), 0 0 2px rgba(34, 211, 238, 0.9);
+  }
+
+  .neon { text-shadow: 0 0 10px rgba(34, 211, 238, 0.7); }
+  .neon-magenta { color: var(--c-magenta); text-shadow: 0 0 10px rgba(255, 43, 214, 0.7); }
+  .neon-border { border: 1px solid rgba(34, 211, 238, 0.5); box-shadow: 0 0 12px rgba(34, 211, 238, 0.35); }
+
+  .chip {
+    @apply inline-flex items-center gap-1 rounded-md px-2 py-0.5 text-[11px] font-mono uppercase tracking-wider;
+    border: 1px solid rgba(34, 211, 238, 0.35);
+    color: #9fe8f5;
+    background: rgba(34, 211, 238, 0.06);
+  }
+
+  /* Neon data tables */
+  table.data { @apply w-full text-sm font-mono; }
+  table.data th {
+    @apply text-left px-3 py-2 uppercase tracking-wider text-[11px] text-neon-cyan/80;
+    border-bottom: 1px solid rgba(34, 211, 238, 0.35);
+  }
+  table.data td {
+    @apply px-3 py-2 text-[#cfe3f5];
+    border-bottom: 1px solid rgba(34, 211, 238, 0.08);
+  }
+  table.data tbody tr:hover td {
+    background: rgba(34, 211, 238, 0.06);
+  }
 }
 
-.stat {
-  @apply text-3xl font-bold text-accent;
+/* Neon scrollbar */
+*::-webkit-scrollbar { width: 10px; height: 10px; }
+*::-webkit-scrollbar-track { background: #05070f; }
+*::-webkit-scrollbar-thumb {
+  background: rgba(34, 211, 238, 0.35);
+  border-radius: 8px;
+  box-shadow: 0 0 8px rgba(34, 211, 238, 0.5);
 }
+*::-webkit-scrollbar-thumb:hover { background: rgba(34, 211, 238, 0.6); }
 
-table.data {
-  @apply w-full text-sm;
-}
-table.data th {
-  @apply text-left text-slate-400 font-medium px-3 py-2 border-b border-slate-800;
-}
-table.data td {
-  @apply px-3 py-2 border-b border-slate-900;
-}
+/* MapLibre controls tuned to theme */
+.maplibregl-ctrl-group { background: rgba(10, 16, 32, 0.85) !important; border: 1px solid rgba(34,211,238,0.3) !important; }
+.maplibregl-ctrl button { filter: invert(1) hue-rotate(160deg); }

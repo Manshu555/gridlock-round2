@@ -26,24 +26,39 @@ export function ForecastChart({ points }: { points: ForecastPoint[] }) {
 
   return (
     <div className="card">
-      <div className="text-sm text-slate-300 mb-3">
-        Forecast vs. actual (city-wide daily violations, holdout period)
+      <div className="text-xs font-mono uppercase tracking-wider text-neon-cyan/80 mb-3">
+        ◹ Forecast vs. actual — city-wide daily violations (holdout)
       </div>
       <ResponsiveContainer width="100%" height={320}>
         <LineChart data={data}>
-          <CartesianGrid stroke="#1e293b" />
-          <XAxis dataKey="date" stroke="#64748b" fontSize={11} />
-          <YAxis stroke="#64748b" fontSize={11} />
-          <Tooltip contentStyle={{ background: "#121826", border: "1px solid #1e293b" }} />
+          <CartesianGrid stroke="rgba(34,211,238,0.10)" />
+          <XAxis dataKey="date" stroke="#5b7aa0" fontSize={11} />
+          <YAxis stroke="#5b7aa0" fontSize={11} />
+          <Tooltip
+            contentStyle={{
+              background: "rgba(10,16,32,0.95)",
+              border: "1px solid rgba(34,211,238,0.4)",
+              borderRadius: 8,
+              boxShadow: "0 0 16px rgba(34,211,238,0.3)",
+            }}
+          />
           <Legend />
-          <Line type="monotone" dataKey="actual" stroke="#38bdf8" dot={false} strokeWidth={2} />
+          <Line
+            type="monotone"
+            dataKey="actual"
+            stroke="#22d3ee"
+            dot={false}
+            strokeWidth={2}
+            style={{ filter: "drop-shadow(0 0 4px rgba(34,211,238,0.8))" }}
+          />
           <Line
             type="monotone"
             dataKey="predicted"
-            stroke="#f59e0b"
+            stroke="#ff2bd6"
             dot={false}
             strokeWidth={2}
             strokeDasharray="5 3"
+            style={{ filter: "drop-shadow(0 0 4px rgba(255,43,214,0.8))" }}
           />
         </LineChart>
       </ResponsiveContainer>

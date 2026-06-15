@@ -2,6 +2,7 @@
 import { useState } from "react";
 
 import { MapView } from "@/components/MapView";
+import { PageHeader } from "@/components/PageHeader";
 import { useHotspots } from "@/hooks/useApi";
 
 export default function HotspotsPage() {
@@ -11,10 +12,11 @@ export default function HotspotsPage() {
 
   return (
     <div className="space-y-4">
-      <h1 className="text-2xl font-bold">Hotspot Map</h1>
-      <p className="text-slate-400 text-sm">
-        Getis-Ord Gi* significant clusters of illegal parking. Color encodes intensity.
-      </p>
+      <PageHeader
+        tag="Geospatial Intel"
+        title="Hotspot Map"
+        subtitle="Getis-Ord Gi* significant clusters of illegal parking. Color encodes intensity."
+      />
 
       <div className="flex flex-wrap gap-4 items-center card">
         <label className="flex items-center gap-2 text-sm">
