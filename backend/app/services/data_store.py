@@ -35,10 +35,15 @@ class DataStore:
     def _load_cells(self) -> pd.DataFrame:
         pq = self.dir / "priority_zones.parquet"
         if pq.exists():
-            return pd.read_parquet(pq)
-        gj = self.dir / "hotspots.geojson"
-        if gj.exists():
-            return _read_geojson_to_df(gj)
+            try:
+                return pd.read_parquet(pq)
+            except Exception as exc:  # e.g. parquet engine missing
+                log.warning("parquet read failed (%s); falling back to GeoJSON", exc)
+        # GeoJSON fallback: priority_zones.geojson carries EPS; hotspots.geojson is last resort
+        for name in ("priority_zones.geojson", "hotspots.geojson"):
+            gj = self.dir / name
+            if gj.exists():
+                return _read_geojson_to_df(gj)
         raise FileNotFoundError(
             "No pipeline outputs found. Run: python -m parking_intel.pipeline"
         )
