@@ -1,0 +1,40 @@
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: deployment/Dockerfile.backend
+    ports:
+      - "8000:8000"
+    environment:
+      GRIDLOCK_CORS_ORIGINS: "*"
+      GRIDLOCK_LOG_LEVEL: "INFO"
+    volumes:
+      - ./outputs:/app/outputs
+
+  frontend:
+    build:
+      context: .
+      dockerfile: deployment/Dockerfile.frontend
+    ports:
+      - "3000:3000"
+    environment:
+      NEXT_PUBLIC_API_URL: "http://localhost:8000"
+      # NEXT_PUBLIC_MAPBOX_TOKEN must be provided at build time for the map
+    depends_on:
+      - backend
+
+  # Optional local PostGIS (Supabase-compatible) for the production data layer
+  db:
+    image: postgis/postgis:16-3.4
+    environment:
+      POSTGRES_USER: gridlock
+      POSTGRES_PASSWORD: gridlock
+      POSTGRES_DB: gridlock
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./deployment/supabase_schema.sql:/docker-entrypoint-initdb.d/01_schema.sql
+
+volumes:
+  pgdata:

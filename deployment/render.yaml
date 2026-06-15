@@ -1,0 +1,18 @@
+# Render Blueprint — backend web service (https://render.com/docs/blueprint-spec)
+services:
+  - type: web
+    name: gridlock-backend
+    runtime: docker
+    dockerfilePath: ./deployment/Dockerfile.backend
+    dockerContext: .
+    plan: free
+    healthCheckPath: /health
+    autoDeploy: true
+    envVars:
+      - key: GRIDLOCK_CORS_ORIGINS
+        value: "*"
+      - key: GRIDLOCK_LOG_LEVEL
+        value: INFO
+      # If using Supabase Postgres for the data layer, set:
+      # - key: DATABASE_URL
+      #   sync: false
