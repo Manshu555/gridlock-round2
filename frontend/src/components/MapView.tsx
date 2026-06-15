@@ -53,19 +53,18 @@ export function MapView({
         type: "fill",
         source: "cells",
         paint: {
-          // neon ramp: deep blue -> cyan -> violet -> magenta
           "fill-color": [
             "interpolate", ["linear"], ["coalesce", ["get", colorBy], 0],
-            0, "#0e1b3a", 25, "#22d3ee", 50, "#a855f7", 75, "#ff2bd6", 100, "#ff6ae6",
+            0, "#1e3a8a", 25, "#22c55e", 50, "#f59e0b", 75, "#ef4444", 100, "#7f1d1d",
           ],
-          "fill-opacity": 0.6,
+          "fill-opacity": 0.55,
         },
       });
       map.addLayer({
         id: "cells-line",
         type: "line",
         source: "cells",
-        paint: { "line-color": "#22d3ee", "line-width": 0.4, "line-opacity": 0.5 },
+        paint: { "line-color": "#0b0f1a", "line-width": 0.3 },
       });
       map.on("click", "cells-fill", (e) => {
         const f = e.features?.[0];
@@ -78,19 +77,5 @@ export function MapView({
     else map.once("load", render);
   }, [data, colorBy, onSelect]);
 
-  return (
-    <div className="relative h-[600px] w-full rounded-xl overflow-hidden neon-border">
-      <div ref={ref} className="h-full w-full" />
-      {/* scanline + vignette overlay */}
-      <div
-        className="pointer-events-none absolute inset-0 rounded-xl"
-        style={{
-          boxShadow: "inset 0 0 80px rgba(5,7,15,0.85)",
-          backgroundImage:
-            "repeating-linear-gradient(to bottom, rgba(34,211,238,0.05) 0px, rgba(34,211,238,0.05) 1px, transparent 2px, transparent 4px)",
-          mixBlendMode: "screen",
-        }}
-      />
-    </div>
-  );
+  return <div ref={ref} className="h-[600px] w-full rounded-xl overflow-hidden" />;
 }

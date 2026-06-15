@@ -2,7 +2,6 @@
 import {
   Bar,
   BarChart,
-  CartesianGrid,
   Cell,
   ResponsiveContainer,
   Tooltip,
@@ -57,17 +56,12 @@ export function SimulatorPanel() {
           />
         </div>
         {data && (
-          <div className="pt-3 border-t border-neon-cyan/20">
-            <div className="text-[11px] font-mono uppercase tracking-wider text-slate-400">
-              Projected impact reduction
-            </div>
-            <div
-              className="text-5xl font-bold font-mono text-neon-lime mt-1 animate-pulse-glow"
-              style={{ textShadow: "0 0 16px rgba(173,255,47,0.7)" }}
-            >
+          <div className="pt-2 border-t border-slate-800">
+            <div className="text-xs uppercase text-slate-400">Projected impact reduction</div>
+            <div className="text-4xl font-bold text-cool mt-1">
               {data.reduction_pct.toFixed(1)}%
             </div>
-            <div className="text-sm text-slate-400 mt-2 font-mono">
+            <div className="text-sm text-slate-400 mt-2">
               {data.violations_addressed.toLocaleString()} violations addressed across{" "}
               {data.cells_cleared} zones
             </div>
@@ -76,28 +70,18 @@ export function SimulatorPanel() {
       </div>
 
       <div className="card lg:col-span-2">
-        <div className="text-xs font-mono uppercase tracking-wider text-neon-cyan/80 mb-3">
-          ⟳ City-wide congestion impact — before vs. after enforcement
-        </div>
-        {isLoading && <div className="text-slate-400 font-mono">Computing…</div>}
-        {error && <div className="neon-magenta font-mono">Failed to load simulation.</div>}
+        <div className="text-sm text-slate-300 mb-3">City-wide congestion-impact: before vs. after</div>
+        {isLoading && <div className="text-slate-400">Computing…</div>}
+        {error && <div className="text-hot">Failed to load simulation.</div>}
         {data && (
           <ResponsiveContainer width="100%" height={300}>
             <BarChart data={chart}>
-              <CartesianGrid stroke="rgba(34,211,238,0.10)" />
-              <XAxis dataKey="name" stroke="#5b7aa0" fontSize={12} />
-              <YAxis stroke="#5b7aa0" fontSize={11} />
-              <Tooltip
-                cursor={{ fill: "rgba(34,211,238,0.06)" }}
-                contentStyle={{
-                  background: "rgba(10,16,32,0.95)",
-                  border: "1px solid rgba(34,211,238,0.4)",
-                  borderRadius: 8,
-                }}
-              />
-              <Bar dataKey="value" radius={[4, 4, 0, 0]}>
-                <Cell fill="#ff2bd6" />
-                <Cell fill="#adff2f" />
+              <XAxis dataKey="name" stroke="#64748b" />
+              <YAxis stroke="#64748b" fontSize={11} />
+              <Tooltip contentStyle={{ background: "#121826", border: "1px solid #1e293b" }} />
+              <Bar dataKey="value">
+                <Cell fill="#ef4444" />
+                <Cell fill="#22c55e" />
               </Bar>
             </BarChart>
           </ResponsiveContainer>

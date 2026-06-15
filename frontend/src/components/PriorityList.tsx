@@ -1,28 +1,11 @@
 "use client";
 import type { PriorityZone } from "@/lib/types";
 
-function catColor(cat?: string) {
+function badge(cat?: string) {
   if (!cat) return "text-slate-400";
-  if (cat.includes("99")) return "neon-magenta";
-  if (cat.includes("95")) return "text-neon-amber";
-  if (cat.includes("90")) return "text-neon-violet";
-  return "text-slate-400";
-}
-
-function RankBadge({ rank }: { rank: number }) {
-  const top = rank <= 3;
-  return (
-    <span
-      className={`inline-flex h-6 w-6 items-center justify-center rounded-md font-mono text-xs font-bold ${
-        top
-          ? "text-neon-magenta border border-neon-magenta/50"
-          : "text-neon-cyan border border-neon-cyan/30"
-      }`}
-      style={top ? { boxShadow: "0 0 10px rgba(255,43,214,0.5)" } : undefined}
-    >
-      {rank}
-    </span>
-  );
+  if (cat.includes("99")) return "text-hot";
+  if (cat.includes("95")) return "text-warm";
+  return "text-slate-300";
 }
 
 export function PriorityList({ zones }: { zones: PriorityZone[] }) {
@@ -44,16 +27,14 @@ export function PriorityList({ zones }: { zones: PriorityZone[] }) {
         <tbody>
           {zones.map((z) => (
             <tr key={z.h3}>
-              <td><RankBadge rank={z.priority_rank} /></td>
-              <td className="text-[#dbe9ff]">{z.police_station ?? "—"}</td>
-              <td className="text-[11px] text-slate-500">{z.h3}</td>
-              <td className="font-bold text-neon-cyan" style={{ textShadow: "0 0 8px rgba(34,211,238,0.5)" }}>
-                {z.eps?.toFixed(1)}
-              </td>
+              <td className="text-accent font-semibold">{z.priority_rank}</td>
+              <td>{z.police_station ?? "—"}</td>
+              <td className="font-mono text-xs text-slate-400">{z.h3}</td>
+              <td className="font-semibold">{z.eps?.toFixed(1)}</td>
               <td>{z.pcii?.toFixed(1)}</td>
               <td>{z.violations?.toLocaleString()}</td>
               <td className="text-slate-400">{z.road_class ?? "—"}</td>
-              <td className={catColor(z.hotspot_category)}>{z.hotspot_category ?? "—"}</td>
+              <td className={badge(z.hotspot_category)}>{z.hotspot_category ?? "—"}</td>
             </tr>
           ))}
         </tbody>
