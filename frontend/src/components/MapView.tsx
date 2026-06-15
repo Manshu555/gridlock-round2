@@ -1,12 +1,16 @@
 "use client";
-import mapboxgl from "mapbox-gl";
+import maplibregl from "maplibre-gl";
 import { useEffect, useRef } from "react";
 
 import type { FeatureCollection } from "@/lib/types";
 
-import "mapbox-gl/dist/mapbox-gl.css";
+import "maplibre-gl/dist/maplibre-gl.css";
 
-const TOKEN = process.env.NEXT_PUBLIC_MAPBOX_TOKEN ?? "";
+// Free, no-token basemap (CARTO dark-matter). Override via NEXT_PUBLIC_MAP_STYLE.
+// Alternative free style: https://tiles.openfreemap.org/styles/liberty
+const STYLE =
+  process.env.NEXT_PUBLIC_MAP_STYLE ??
+  "https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json";
 
 export function MapView({
   data,
@@ -18,18 +22,22 @@ export function MapView({
   onSelect?: (h3: string) => void;
 }) {
   const ref = useRef<HTMLDivElement>(null);
-  const mapRef = useRef<mapboxgl.Map | null>(null);
+  const mapRef = useRef<maplibregl.Map | null>(null);
 
   useEffect(() => {
-    if (!TOKEN || !ref.current || mapRef.current) return;
-    mapboxgl.accessToken = TOKEN;
-    mapRef.current = new mapboxgl.Map({
+    if (!ref.current || mapRef.current) return;
+    mapRef.current = new maplibregl.Map({
       container: ref.current,
-      style: "mapbox://styles/mapbox/dark-v11",
+      style: STYLE,
       center: [77.59, 12.97],
       zoom: 10.5,
+      attributionControl: { compact: true },
     });
-    mapRef.current.addControl(new mapboxgl.NavigationControl(), "top-right");
+    mapRef.current.addControl(new maplibregl.NavigationControl(), "top-right");
+    return () => {
+      mapRef.current?.remove();
+      mapRef.current = null;
+    };
   }, []);
 
   useEffect(() => {
@@ -69,18 +77,5 @@ export function MapView({
     else map.once("load", render);
   }, [data, colorBy, onSelect]);
 
-  if (!TOKEN) {
-    return (
-      <div className="card h-[600px] flex items-center justify-center text-center text-slate-400">
-        <div>
-          <div className="text-lg mb-2">🗺️ Map disabled</div>
-          <div className="text-sm">
-            Set <code className="text-accent">NEXT_PUBLIC_MAPBOX_TOKEN</code> in
-            <code className="text-accent"> .env.local</code> to render the interactive map.
-          </div>
-        </div>
-      </div>
-    );
-  }
   return <div ref={ref} className="h-[600px] w-full rounded-xl overflow-hidden" />;
 }

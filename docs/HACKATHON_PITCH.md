@@ -38,7 +38,7 @@ sending a single patrol.
 6. Close: "Detect, quantify, forecast, prioritize, simulate — deployed, tested, documented."
 
 ## Tech at a glance
-H3 · Getis-Ord Gi* · OSMnx · LightGBM/SHAP · FastAPI · Next.js + Mapbox GL · PostGIS · Docker · GitHub Actions.
+H3 · Getis-Ord Gi* · OSMnx · LightGBM/SHAP · FastAPI · Next.js + MapLibre GL (free basemap) · PostGIS · Docker · GitHub Actions.
 
 ## What's next
 External traffic-API calibration (measured "X% slower"), TFT multi-horizon forecasting, DiD causal

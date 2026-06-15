@@ -11,7 +11,7 @@ optional Postgres/PostGIS data layer (Supabase). Everything also runs locally vi
 ```bash
 docker compose up --build
 # backend  -> http://localhost:8000/docs
-# frontend -> http://localhost:3000   (needs NEXT_PUBLIC_MAPBOX_TOKEN at build)
+# frontend -> http://localhost:3000   (map is free, no token required)
 # postgis  -> localhost:5432 (gridlock/gridlock)
 ```
 
@@ -26,7 +26,7 @@ docker compose up --build
 1. In Vercel: **Add New Project → Import** the repo, set **Root Directory = `frontend`**.
 2. Environment variables:
    - `NEXT_PUBLIC_API_URL` = the Render backend URL
-   - `NEXT_PUBLIC_MAPBOX_TOKEN` = your Mapbox public token
+   - `NEXT_PUBLIC_MAP_STYLE` *(optional)* — basemap is free/no-token (MapLibre + CARTO); only set this to override the style
 3. Deploy (`next build`). Vercel gives `https://<project>.vercel.app`.
 
 ## 3. Data layer → Supabase (optional, for persistence)

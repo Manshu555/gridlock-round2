@@ -29,7 +29,7 @@
 └────────────────────────────────────┬──────────────────────────────────────┘
                                      │  REST (JSON / GeoJSON), React Query
 ┌────────────────────────────────────▼──────────────────────────────────────┐
-│  FRONTEND (Next.js + Mapbox GL + Recharts)                                  │
+│  FRONTEND (Next.js + MapLibre GL + Recharts)                                │
 │  Dashboard · Hotspots · Forecast · Priority Zones · Simulator · Analytics   │
 └─────────────────────────────────────────────────────────────────────────────┘
 ```
@@ -40,7 +40,7 @@
 |---|---|---|
 | ML/GIS core (`ml/parking_intel`) | pandas, numpy, scipy, h3, lightgbm, (osmnx/pysal optional) | M1–M5 algorithms + pipeline runner |
 | Backend (`backend/app`) | FastAPI, Pydantic, pydantic-settings | REST API over pipeline outputs; OpenAPI; logging; CORS |
-| Frontend (`frontend`) | Next.js 14 (App Router), TS, Tailwind, Mapbox GL, Recharts, React Query | Operational dashboard |
+| Frontend (`frontend`) | Next.js 14 (App Router), TS, Tailwind, MapLibre GL (free, no-token basemap), Recharts, React Query | Operational dashboard |
 | Data layer (prod) | PostgreSQL + PostGIS (Supabase) | Persisted scored cells/forecasts (schema in `deployment/`) |
 | Infra | Docker, docker-compose, GitHub Actions | Build, test, containerize, CI |
 

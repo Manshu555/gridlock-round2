@@ -4,7 +4,6 @@
   "buildCommand": "next build",
   "installCommand": "npm install",
   "env": {
-    "NEXT_PUBLIC_API_URL": "@gridlock_api_url",
-    "NEXT_PUBLIC_MAPBOX_TOKEN": "@gridlock_mapbox_token"
+    "NEXT_PUBLIC_API_URL": "@gridlock_api_url"
   }
 }

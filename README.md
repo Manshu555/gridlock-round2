@@ -35,7 +35,7 @@ Full diagram: [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md).
 
 ```
 backend/      FastAPI service (REST + OpenAPI)
-frontend/     Next.js + TypeScript + Tailwind + Mapbox GL dashboard
+frontend/     Next.js + TypeScript + Tailwind + MapLibre GL dashboard
 ml/           parking_intel core library (M1–M5) + pipeline runner
 gis/          geospatial helpers (H3, GeoJSON)
 notebooks/    profiling / EDA
@@ -64,14 +64,14 @@ cd backend && uvicorn app.main:app --reload
 ### 3. Run the dashboard
 ```bash
 cd frontend && npm install && npm run dev
-# http://localhost:3000   (set NEXT_PUBLIC_MAPBOX_TOKEN and NEXT_PUBLIC_API_URL in .env.local)
+# http://localhost:3000   (set NEXT_PUBLIC_API_URL in .env.local; map is free, no token)
 ```
 
 Or everything at once: `docker compose up --build`.
 
 ## Tech stack
 
-**Frontend** Next.js · TypeScript · TailwindCSS · Mapbox GL · Recharts · React Query
+**Frontend** Next.js · TypeScript · TailwindCSS · MapLibre GL (free, no-token CARTO basemap) · Recharts · React Query
 **Backend** FastAPI · Pydantic · SQLAlchemy
 **GIS** GeoPandas · H3 · PySAL · OSMnx
 **ML** Pandas · NumPy · LightGBM · SHAP · scikit-learn
