@@ -1,0 +1,18 @@
+{
+  "cells_cleared": 5,
+  "compliance_factor": 0.85,
+  "city_impact_before": 14875557.72,
+  "city_impact_after": 12351428.5,
+  "absolute_reduction": 2524129.22,
+  "reduction_pct": 16.97,
+  "violations_addressed": 40736,
+  "k": 5,
+  "ranked_by": "eps",
+  "cleared_cell_ids": [
+    "8960145b553ffff",
+    "8960145b59bffff",
+    "8960145b427ffff",
+    "8961892e9abffff",
+    "8960145b5cbffff"
+  ]
+}

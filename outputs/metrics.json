@@ -1,0 +1,121 @@
+{
+  "morans_i": {
+    "morans_i": 0.5144,
+    "expected": -0.0004,
+    "interpretation": "clustered"
+  },
+  "forecast": {
+    "backend": "lightgbm",
+    "n_train": 250272,
+    "n_test": 60672,
+    "mae": 0.7841,
+    "rmse": 3.4357,
+    "mase_vs_seasonal_naive": 0.8808
+  },
+  "simulation_top5": {
+    "cells_cleared": 5,
+    "compliance_factor": 0.85,
+    "city_impact_before": 14875557.72,
+    "city_impact_after": 12351428.5,
+    "absolute_reduction": 2524129.22,
+    "reduction_pct": 16.97,
+    "violations_addressed": 40736,
+    "k": 5,
+    "ranked_by": "eps",
+    "cleared_cell_ids": [
+      "8960145b553ffff",
+      "8960145b59bffff",
+      "8960145b427ffff",
+      "8961892e9abffff",
+      "8960145b5cbffff"
+    ]
+  },
+  "rows_clean": 298431,
+  "h3_resolution": 9,
+  "n_cells": 2528,
+  "n_hotspots_95": 119,
+  "pcii_mean": 30.17,
+  "pcii_max": 75.42,
+  "top_priority_zones": [
+    {
+      "h3": "8960145b553ffff",
+      "police_station": "Upparpet",
+      "eps": 84.71,
+      "pcii": 75.42,
+      "violations": 12123,
+      "hotspot_category": "Hot Spot (99%)"
+    },
+    {
+      "h3": "8960145b59bffff",
+      "police_station": "City Market",
+      "eps": 74.76,
+      "pcii": 73.04,
+      "violations": 8585,
+      "hotspot_category": "Hot Spot (99%)"
+    },
+    {
+      "h3": "8960145b427ffff",
+      "police_station": "Upparpet",
+      "eps": 71.89,
+      "pcii": 73.31,
+      "violations": 7369,
+      "hotspot_category": "Hot Spot (99%)"
+    },
+    {
+      "h3": "8961892e9abffff",
+      "police_station": "Shivajinagar",
+      "eps": 68.67,
+      "pcii": 70.34,
+      "violations": 6667,
+      "hotspot_category": "Hot Spot (99%)"
+    },
+    {
+      "h3": "8960145b5cbffff",
+      "police_station": "Upparpet",
+      "eps": 66.8,
+      "pcii": 69.93,
+      "violations": 5992,
+      "hotspot_category": "Hot Spot (99%)"
+    },
+    {
+      "h3": "8961892e9bbffff",
+      "police_station": "Shivajinagar",
+      "eps": 61.24,
+      "pcii": 67.42,
+      "violations": 4257,
+      "hotspot_category": "Hot Spot (99%)"
+    },
+    {
+      "h3": "8960145b3a7ffff",
+      "police_station": "Rajajinagar",
+      "eps": 61.04,
+      "pcii": 66.83,
+      "violations": 4293,
+      "hotspot_category": "Hot Spot (99%)"
+    },
+    {
+      "h3": "8961892e917ffff",
+      "police_station": "Shivajinagar",
+      "eps": 57.78,
+      "pcii": 57.44,
+      "violations": 4874,
+      "hotspot_category": "Hot Spot (99%)"
+    },
+    {
+      "h3": "8960145a26bffff",
+      "police_station": "Vijayanagara",
+      "eps": 57.26,
+      "pcii": 62.45,
+      "violations": 3653,
+      "hotspot_category": "Hot Spot (99%)"
+    },
+    {
+      "h3": "8960145b543ffff",
+      "police_station": "Upparpet",
+      "eps": 57.19,
+      "pcii": 65.97,
+      "violations": 2914,
+      "hotspot_category": "Hot Spot (99%)"
+    }
+  ]
+}
