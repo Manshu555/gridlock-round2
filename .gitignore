@@ -1,0 +1,39 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.env
+.mypy_cache/
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Data & large artifacts (kept out of git; regenerate via pipeline)
+*.csv
+*.parquet
+*.pkl
+*.joblib
+datasets/*.csv
+outputs/*.parquet
+outputs/*.pkl
+# but keep generated geojson/json summaries small enough to track:
+!outputs/.gitkeep
+
+# Node / Next.js
+node_modules/
+.next/
+out/
+frontend/.env.local
+npm-debug.log*
+
+# OS / IDE
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# Docker
+*.log
