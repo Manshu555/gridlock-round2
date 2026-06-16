@@ -12,6 +12,7 @@ backend/.env
 .ruff_cache/
 .coverage
 htmlcov/
+_pytest_out.txt
 
 # Data & large artifacts (kept out of git; regenerate via pipeline)
 *.csv
