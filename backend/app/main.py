@@ -27,6 +27,21 @@ app = FastAPI(
     contact={"name": "Gridlock", "url": "https://github.com/Manshu555/gridlock-round2"},
 )
 
+
+@app.on_event("startup")
+async def on_startup() -> None:
+    """Initialise database tables on startup (no-op when DB is not configured)."""
+    if settings.db_enabled:
+        try:
+            from app.core.database import Base, get_engine
+            from app.models import db_models  # noqa: F401 — register ORM models with Base
+            Base.metadata.create_all(get_engine())
+            log.info("Database tables ensured (create_all completed).")
+        except Exception as exc:
+            log.error("Database startup error: %s", exc)
+    else:
+        log.info("No GRIDLOCK_DATABASE_URL set — running in file-only mode.")
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=settings.cors_list,

@@ -13,6 +13,6 @@ services:
         value: "*"
       - key: GRIDLOCK_LOG_LEVEL
         value: INFO
-      # If using Supabase Postgres for the data layer, set:
-      # - key: DATABASE_URL
-      #   sync: false
+      # Neon PostgreSQL — set this manually in Render dashboard (never hardcode credentials)
+      - key: GRIDLOCK_DATABASE_URL
+        sync: false
