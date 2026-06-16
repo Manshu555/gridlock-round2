@@ -7,7 +7,6 @@ import type { FeatureCollection } from "@/lib/types";
 import "maplibre-gl/dist/maplibre-gl.css";
 
 // Free, no-token basemap (CARTO dark-matter). Override via NEXT_PUBLIC_MAP_STYLE.
-// Alternative free style: https://tiles.openfreemap.org/styles/liberty
 const STYLE =
   process.env.NEXT_PUBLIC_MAP_STYLE ??
   "https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json";
@@ -57,14 +56,17 @@ export function MapView({
             "interpolate", ["linear"], ["coalesce", ["get", colorBy], 0],
             0, "#1e3a8a", 25, "#22c55e", 50, "#f59e0b", 75, "#ef4444", 100, "#7f1d1d",
           ],
-          "fill-opacity": 0.55,
+          "fill-opacity": 0.6,
         },
       });
       map.addLayer({
         id: "cells-line",
         type: "line",
         source: "cells",
-        paint: { "line-color": "#0b0f1a", "line-width": 0.3 },
+        paint: {
+          "line-color": "rgba(255, 255, 255, 0.08)",
+          "line-width": 0.5
+        },
       });
       map.on("click", "cells-fill", (e) => {
         const f = e.features?.[0];
@@ -77,5 +79,9 @@ export function MapView({
     else map.once("load", render);
   }, [data, colorBy, onSelect]);
 
-  return <div ref={ref} className="h-[600px] w-full rounded-xl overflow-hidden" />;
+  return (
+    <div className="card p-0 overflow-hidden">
+      <div ref={ref} className="h-[520px] w-full" />
+    </div>
+  );
 }

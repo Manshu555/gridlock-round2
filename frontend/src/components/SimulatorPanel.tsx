@@ -19,32 +19,38 @@ export function SimulatorPanel() {
 
   const chart = data
     ? [
-        { name: "Before", value: data.city_impact_before },
-        { name: "After", value: data.city_impact_after },
+        { name: "Before", value: data.city_impact_before, fill: "#ef4444" },
+        { name: "After", value: data.city_impact_after, fill: "#22c55e" },
       ]
     : [];
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-      <div className="card lg:col-span-1 space-y-5">
+    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      {/* Controls Panel */}
+      <div className="card space-y-6">
         <div>
-          <label className="text-sm text-slate-300">
-            Enforce top-K zones: <span className="text-accent font-semibold">{k}</span>
-          </label>
+          <div className="flex items-center justify-between mb-3">
+            <label className="text-sm font-medium text-white">Top-K Zones</label>
+            <span className="text-accent font-semibold text-lg">{k}</span>
+          </div>
           <input
             type="range"
             min={1}
             max={50}
             value={k}
             onChange={(e) => setK(Number(e.target.value))}
-            className="w-full accent-sky-400"
           />
+          <div className="flex justify-between text-[10px] text-slate-500 mt-1.5 font-mono">
+            <span>1</span>
+            <span>50</span>
+          </div>
         </div>
+
         <div>
-          <label className="text-sm text-slate-300">
-            Compliance factor:{" "}
-            <span className="text-accent font-semibold">{compliance.toFixed(2)}</span>
-          </label>
+          <div className="flex items-center justify-between mb-3">
+            <label className="text-sm font-medium text-white">Compliance Factor</label>
+            <span className="text-accent font-semibold text-lg">{compliance.toFixed(2)}</span>
+          </div>
           <input
             type="range"
             min={0.1}
@@ -52,36 +58,80 @@ export function SimulatorPanel() {
             step={0.05}
             value={compliance}
             onChange={(e) => setCompliance(Number(e.target.value))}
-            className="w-full accent-sky-400"
           />
+          <div className="flex justify-between text-[10px] text-slate-500 mt-1.5 font-mono">
+            <span>0.1</span>
+            <span>1.0</span>
+          </div>
         </div>
+
         {data && (
-          <div className="pt-2 border-t border-slate-800">
-            <div className="text-xs uppercase text-slate-400">Projected impact reduction</div>
-            <div className="text-4xl font-bold text-cool mt-1">
-              {data.reduction_pct.toFixed(1)}%
+          <div className="pt-5 border-t border-white/[0.06]">
+            <div className="text-[11px] uppercase tracking-wider text-slate-500 font-medium mb-2">
+              Projected Impact Reduction
             </div>
-            <div className="text-sm text-slate-400 mt-2">
-              {data.violations_addressed.toLocaleString()} violations addressed across{" "}
-              {data.cells_cleared} zones
+            <div className="flex items-baseline gap-2">
+              <span className="text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-emerald-500">
+                {data.reduction_pct.toFixed(1)}
+              </span>
+              <span className="text-2xl text-emerald-400 font-semibold">%</span>
+            </div>
+            <div className="mt-3 flex items-center gap-2 text-sm text-slate-400">
+              <div className="w-2 h-2 rounded-full bg-emerald-500/30" />
+              {data.violations_addressed.toLocaleString()} violations across {data.cells_cleared} zones
             </div>
           </div>
         )}
       </div>
 
+      {/* Chart Panel */}
       <div className="card lg:col-span-2">
-        <div className="text-sm text-slate-300 mb-3">City-wide congestion-impact: before vs. after</div>
-        {isLoading && <div className="text-slate-400">Computing…</div>}
-        {error && <div className="text-hot">Failed to load simulation.</div>}
+        <div className="mb-4">
+          <div className="text-sm font-medium text-white">City-wide Congestion Impact</div>
+          <div className="text-xs text-slate-500 mt-1">Before vs. after enforcement simulation</div>
+        </div>
+
+        {isLoading && (
+          <div className="h-[280px] flex items-center justify-center text-slate-400">
+            <div className="animate-pulse-soft">Computing simulation…</div>
+          </div>
+        )}
+        {error && (
+          <div className="h-[280px] flex items-center justify-center text-red-400">
+            Failed to load simulation
+          </div>
+        )}
         {data && (
-          <ResponsiveContainer width="100%" height={300}>
-            <BarChart data={chart}>
-              <XAxis dataKey="name" stroke="#64748b" />
-              <YAxis stroke="#64748b" fontSize={11} />
-              <Tooltip contentStyle={{ background: "#121826", border: "1px solid #1e293b" }} />
-              <Bar dataKey="value">
-                <Cell fill="#ef4444" />
-                <Cell fill="#22c55e" />
+          <ResponsiveContainer width="100%" height={280}>
+            <BarChart data={chart} barSize={80}>
+              <XAxis
+                dataKey="name"
+                stroke="#475569"
+                fontSize={12}
+                tickLine={false}
+                axisLine={{ stroke: 'rgba(255,255,255,0.06)' }}
+              />
+              <YAxis
+                stroke="#475569"
+                fontSize={11}
+                tickLine={false}
+                axisLine={false}
+                tickFormatter={(v) => `${(v / 1e6).toFixed(1)}M`}
+              />
+              <Tooltip
+                contentStyle={{
+                  background: '#161616',
+                  border: '1px solid rgba(255,255,255,0.08)',
+                  borderRadius: '12px',
+                  padding: '12px 16px',
+                }}
+                labelStyle={{ color: '#94a3b8', marginBottom: '4px' }}
+                itemStyle={{ color: '#fff' }}
+                formatter={(value: number) => [value.toLocaleString(), 'Impact']}
+              />
+              <Bar dataKey="value" radius={[8, 8, 0, 0]}>
+                <Cell fill="#ef4444" fillOpacity={0.8} />
+                <Cell fill="#22c55e" fillOpacity={0.8} />
               </Bar>
             </BarChart>
           </ResponsiveContainer>

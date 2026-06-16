@@ -26,24 +26,60 @@ export function ForecastChart({ points }: { points: ForecastPoint[] }) {
 
   return (
     <div className="card">
-      <div className="text-sm text-slate-300 mb-3">
-        Forecast vs. actual (city-wide daily violations, holdout period)
+      <div className="mb-4">
+        <div className="text-sm font-medium text-white">Forecast vs. Actual</div>
+        <div className="text-xs text-slate-500 mt-1">City-wide daily violations, holdout period</div>
       </div>
-      <ResponsiveContainer width="100%" height={320}>
-        <LineChart data={data}>
-          <CartesianGrid stroke="#1e293b" />
-          <XAxis dataKey="date" stroke="#64748b" fontSize={11} />
-          <YAxis stroke="#64748b" fontSize={11} />
-          <Tooltip contentStyle={{ background: "#121826", border: "1px solid #1e293b" }} />
-          <Legend />
-          <Line type="monotone" dataKey="actual" stroke="#38bdf8" dot={false} strokeWidth={2} />
+      <ResponsiveContainer width="100%" height={340}>
+        <LineChart data={data} margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>
+          <CartesianGrid
+            stroke="rgba(255,255,255,0.04)"
+            vertical={false}
+          />
+          <XAxis
+            dataKey="date"
+            stroke="#475569"
+            fontSize={11}
+            tickLine={false}
+            axisLine={{ stroke: 'rgba(255,255,255,0.06)' }}
+          />
+          <YAxis
+            stroke="#475569"
+            fontSize={11}
+            tickLine={false}
+            axisLine={false}
+          />
+          <Tooltip
+            contentStyle={{
+              background: '#161616',
+              border: '1px solid rgba(255,255,255,0.08)',
+              borderRadius: '12px',
+              padding: '12px 16px',
+            }}
+            labelStyle={{ color: '#94a3b8', marginBottom: '4px' }}
+            itemStyle={{ color: '#fff' }}
+          />
+          <Legend
+            wrapperStyle={{ paddingTop: '16px' }}
+            iconType="circle"
+            iconSize={8}
+          />
+          <Line
+            type="monotone"
+            dataKey="actual"
+            stroke="#3b82f6"
+            strokeWidth={2.5}
+            dot={false}
+            name="Actual"
+          />
           <Line
             type="monotone"
             dataKey="predicted"
             stroke="#f59e0b"
+            strokeWidth={2.5}
+            strokeDasharray="6 4"
             dot={false}
-            strokeWidth={2}
-            strokeDasharray="5 3"
+            name="Predicted"
           />
         </LineChart>
       </ResponsiveContainer>
