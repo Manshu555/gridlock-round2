@@ -290,24 +290,55 @@ def db_get_priority_zones(limit: int = Query(50, ge=1, le=500)) -> list[dict]:
 @router.get("/db/forecast", tags=["database"], summary="Forecast records from PostgreSQL")
 def db_get_forecast(
     h3_id: str | None = Query(None, description="Filter to a single H3 cell"),
-    limit: int = Query(500, ge=1, le=5000),
+    limit: int = Query(2000, ge=1, le=20000),
 ) -> dict:
-    """Return LightGBM forecast records from PostgreSQL."""
+    """Return LightGBM forecast from PostgreSQL plus model metrics.
+
+    Without ``h3_id`` it returns a **city-wide daily series aggregated by date** (sum of
+    violations/predictions across all cells) so the time-series chart renders a proper line.
+    With ``h3_id`` it returns that single cell's daily points.
+    """
+    from sqlalchemy import func
+
     from app.models.db_models import ForecastRecord
+
     db = _require_db()
+    metrics = get_store().metrics().get("forecast", {})
     try:
-        q = db.query(ForecastRecord)
         if h3_id:
-            q = q.filter(ForecastRecord.h3 == h3_id)
-        q = q.order_by(ForecastRecord.date.asc()).limit(limit)
-        records = q.all()
+            rows = (
+                db.query(ForecastRecord)
+                .filter(ForecastRecord.h3 == h3_id)
+                .order_by(ForecastRecord.date.asc())
+                .limit(limit)
+                .all()
+            )
+            points = [
+                {"h3": r.h3, "date": str(r.date),
+                 "violations": float(r.violations or 0), "prediction": float(r.prediction or 0)}
+                for r in rows
+            ]
+        else:
+            rows = (
+                db.query(
+                    ForecastRecord.date.label("date"),
+                    func.sum(ForecastRecord.violations).label("violations"),
+                    func.sum(ForecastRecord.prediction).label("prediction"),
+                )
+                .group_by(ForecastRecord.date)
+                .order_by(ForecastRecord.date.asc())
+                .all()
+            )
+            points = [
+                {"h3": "ALL", "date": str(d),
+                 "violations": round(float(v or 0), 2), "prediction": round(float(p or 0), 2)}
+                for d, v, p in rows
+            ]
         return {
-            "available": len(records) > 0,
-            "count": len(records),
-            "points": [
-                {"h3": r.h3, "date": r.date, "violations": r.violations, "prediction": r.prediction}
-                for r in records
-            ],
+            "available": len(points) > 0,
+            "count": len(points),
+            "metrics": metrics,
+            "points": points,
         }
     finally:
         db.close()
