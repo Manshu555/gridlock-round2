@@ -33,10 +33,6 @@ const config: Config = {
       },
       borderRadius: {
         "card": "16px",
-        "nav": "20px",
-      },
-      backdropBlur: {
-        "card": "12px",
       },
       animation: {
         "fade-in": "fadeIn 0.3s ease-out",
@@ -61,9 +57,6 @@ const config: Config = {
           "0%, 100%": { opacity: "1" },
           "50%": { opacity: "0.7" },
         },
-      },
-      transitionTimingFunction: {
-        "premium": "cubic-bezier(0.16, 1, 0.3, 1)",
       },
     },
   },
