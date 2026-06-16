@@ -45,7 +45,8 @@ export interface ForecastPoint {
 
 export interface ForecastResponse {
   available: boolean;
-  metrics: Record<string, unknown>;
+  metrics?: Record<string, unknown>;  // present in /forecast, absent in /db/forecast
+  count?: number;                      // present in /db/forecast
   points: ForecastPoint[];
 }
 

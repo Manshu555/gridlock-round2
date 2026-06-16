@@ -25,7 +25,7 @@ export const api = {
   hotspot: (id: string) => get<Record<string, unknown>>(`/hotspots/${id}`),
   priorityZones: (limit = 50) => get<PriorityZone[]>(`/priority-zones?limit=${limit}`),
   forecast: (h3?: string, limit = 1000) =>
-    get<ForecastResponse>(`/forecast?limit=${limit}${h3 ? `&h3_id=${h3}` : ""}`),
+    get<ForecastResponse>(`/db/forecast?limit=${limit}${h3 ? `&h3_id=${h3}` : ""}`),
   simulation: (k = 5, compliance = 0.85) =>
     get<SimulationResponse>(`/simulation?k=${k}&compliance=${compliance}`),
   analytics: () => get<Analytics>("/analytics"),
