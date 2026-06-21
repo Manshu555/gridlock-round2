@@ -1,6 +1,8 @@
 """Shared fixtures: a small synthetic violation dataset usable without the real CSV."""
 from __future__ import annotations
 
+import json
+
 import numpy as np
 import pandas as pd
 import pytest
@@ -21,7 +23,6 @@ def synthetic_events() -> pd.DataFrame:
         lat = clat + rng.normal(0, 0.004)
         lon = clon + rng.normal(0, 0.004)
         ts = base + pd.Timedelta(days=int(rng.integers(0, 120)), hours=int(rng.integers(0, 24)))
-        import json as _json
         rows.append(
             {
                 "id": f"FKID{i:06d}",
@@ -29,7 +30,7 @@ def synthetic_events() -> pd.DataFrame:
                 "longitude": lon,
                 "vehicle_type": vehicles[i % len(vehicles)],
                 "vehicle_number": f"FKN{i % 500:05d}",
-                "violation_type": _json.dumps(vtypes[i % len(vtypes)]),
+                "violation_type": json.dumps(vtypes[i % len(vtypes)]),
                 "created_datetime": ts.strftime("%Y-%m-%d %H:%M:%S+00"),
                 "police_station": ["Upparpet", "Shivajinagar", "City Market"][i % 3],
                 "junction_name": "BTP051 - Test Jn" if i % 4 == 0 else "No Junction",
