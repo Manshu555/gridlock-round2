@@ -1,4 +1,5 @@
 import React from "react";
+import Image from "next/image";
 
 export function TopNav() {
   return (
@@ -27,10 +28,12 @@ export function TopNav() {
           <span className="absolute top-1 right-1 w-2 h-2 bg-neon rounded-none"></span>
         </button>
         <div className="w-8 h-8 rounded-none overflow-hidden border border-border grayscale hover:grayscale-0 transition-all">
-          <img 
+          <Image 
             className="w-full h-full object-cover" 
             alt="User profile" 
             src="https://lh3.googleusercontent.com/aida-public/AB6AXuBuqbiY6Rw_Mc7SauoHEBRDJf-Eo4GhwyETgzaCYw60xNPG2sUjAfN4GpYDim_OXhn34JFOKhDgwHswTk9mwDl8EcBHErjD6ZeUrW42WycGaCcpHHfj7u3zF5XgUn6koI4KplZFMPMtC5oohDrRJuUYYuzT-Z8MFcgTY8KNyTkQrf2xqCaiLfBwcAjvzsEMnqtxJwlLJQLI9zy_gBWjmeh498ZPclYczYnihhIYDSZPSuprdBg0jdOqblZuCupwmV-f8zm5XFzA0XuP" 
+            width={32}
+            height={32}
           />
         </div>
       </div>
