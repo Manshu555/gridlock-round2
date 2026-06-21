@@ -11,8 +11,8 @@ export default function ForecastPage() {
     <div className="p-10 overflow-y-auto flex-1 space-y-10">
       {/* Header */}
       <div className="border-b border-border pb-8">
-        <div className="font-mono text-label-md text-muted uppercase tracking-widest mb-2">Module / Forecasting</div>
-        <h1 className="font-sans text-headline-lg text-foreground uppercase tracking-tight">Hotspot_Forecast</h1>
+        <div className="font-mono text-label-md text-muted uppercase tracking-widest mb-2">Module / Congestion Impact</div>
+        <h1 className="font-sans text-headline-lg text-foreground uppercase tracking-tight">Congestion_Impact</h1>
         <p className="font-sans text-body-md text-muted mt-2">
           LightGBM next-window hotspot risk probability forecast · temporal holdout validation
         </p>
