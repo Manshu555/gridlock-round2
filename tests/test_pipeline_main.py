@@ -1,6 +1,8 @@
-import sys
-from parking_intel import pipeline
+from __future__ import annotations
 
+import sys
+
+from parking_intel import pipeline
 
 def test_main_calls_run(monkeypatch, tmp_path):
     """Ensure the CLI entrypoint parses args and calls run() without executing the full pipeline.
