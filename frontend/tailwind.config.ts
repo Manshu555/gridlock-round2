@@ -41,7 +41,7 @@ const config: Config = {
         "body-sm": ["12px", { lineHeight: "1.4", letterSpacing: "0", fontWeight: "400" }],
         "label-md": ["12px", { lineHeight: "1", letterSpacing: "0.05em", fontWeight: "600" }],
         "label-sm": ["10px", { lineHeight: "1", letterSpacing: "0.05em", fontWeight: "600" }],
-        "display-massive": ["64px", { lineHeight: "1", letterSpacing: "-0.05em", fontWeight: "400" }],
+        "display-massive": ["42px", { lineHeight: "1", letterSpacing: "-0.05em", fontWeight: "400" }],
       },
       animation: {
         "fade-in": "fadeIn 0.3s ease-out",
