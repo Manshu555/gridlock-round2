@@ -45,8 +45,8 @@ export default function HotspotsPage() {
                 onChange={(e) => setColorBy(e.target.value as "pcii" | "hotspot_score")}
                 className="appearance-none bg-transparent font-mono text-label-md text-foreground uppercase cursor-pointer focus:outline-none pr-6"
               >
-                <option value="hotspot_score">Hotspot_Score (Gi*)</option>
-                <option value="pcii">Impact_Score (PCII)</option>
+                <option className="bg-background text-foreground" value="hotspot_score">Hotspot_Score (Gi*)</option>
+                <option className="bg-background text-foreground" value="pcii">Impact_Score (PCII)</option>
               </select>
             </div>
           </div>
