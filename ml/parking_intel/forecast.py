@@ -94,6 +94,20 @@ def train_forecast(df_events: pd.DataFrame) -> tuple[object, dict, pd.DataFrame]
     naive_err = float(np.mean(np.abs(test["violations"].to_numpy() - test["lag_7"].to_numpy())))
     mase = mae / naive_err if naive_err > 1e-9 else float("nan")
 
+    # Classification metrics
+    from sklearn.metrics import roc_auc_score, f1_score, precision_score, recall_score
+    y_true_bin = (test["violations"].to_numpy() > 0).astype(int)
+    y_pred_bin = (pred > 0.5).astype(int)
+    
+    try:
+        auc_roc = float(roc_auc_score(y_true_bin, pred))
+    except Exception:
+        auc_roc = 0.5
+        
+    f1 = float(f1_score(y_true_bin, y_pred_bin, zero_division=0))
+    precision = float(precision_score(y_true_bin, y_pred_bin, zero_division=0))
+    recall = float(recall_score(y_true_bin, y_pred_bin, zero_division=0))
+
     test = test.copy()
     test["prediction"] = pred
     metrics = {
@@ -103,6 +117,10 @@ def train_forecast(df_events: pd.DataFrame) -> tuple[object, dict, pd.DataFrame]
         "mae": round(mae, 4),
         "rmse": round(rmse, 4),
         "mase_vs_seasonal_naive": round(mase, 4),
+        "auc_roc": round(auc_roc, 4),
+        "f1": round(f1, 4),
+        "precision": round(precision, 4),
+        "recall": round(recall, 4),
     }
     return model, metrics, test
 

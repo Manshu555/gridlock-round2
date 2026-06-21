@@ -13,7 +13,7 @@ export default function ForecastPage() {
       <div>
         <h1 className="text-3xl font-semibold text-white tracking-tight">Hotspot Forecast</h1>
         <p className="text-slate-500 text-sm mt-1.5">
-          LightGBM next-window violation-intensity forecast with temporal holdout validation
+          LightGBM next-window hotspot risk probability forecast with temporal holdout validation
         </p>
       </div>
 
@@ -24,17 +24,21 @@ export default function ForecastPage() {
           value={String(metrics.backend ?? "—").toUpperCase()}
         />
         <StatCard
-          label="Mean Absolute Error"
-          value={metrics.mae ?? "—"}
+          label="AUC-ROC"
+          value={metrics.auc_roc ?? "—"}
+          sub="Model discrimination"
         />
         <StatCard
-          label="Root Mean Square Error"
-          value={metrics.rmse ?? "—"}
+          label="F1 Score"
+          value={metrics.f1 ?? "—"}
         />
         <StatCard
-          label="MASE Score"
-          value={metrics.mase_vs_seasonal_naive ?? "—"}
-          sub="< 1 beats seasonal naïve"
+          label="Precision / Recall"
+          value={
+            metrics.precision !== undefined && metrics.recall !== undefined
+              ? `${metrics.precision} / ${metrics.recall}`
+              : "— / —"
+          }
         />
       </div>
 
