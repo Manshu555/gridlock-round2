@@ -47,6 +47,20 @@ export default function HelpPage() {
           </p>
         </div>
 
+        <div className="border border-border bg-surface p-6 mt-4">
+          <h2 className="font-mono text-headline-md text-neon uppercase tracking-wider mb-4">6. Frequently Asked Questions (FAQ)</h2>
+          <div className="space-y-4">
+            <div>
+              <h3 className="font-sans text-body-md font-bold text-foreground">How often is the hotspot data updated?</h3>
+              <p className="font-sans text-body-sm text-muted mt-1">Data is ingested in real-time from municipal sensors and refreshed on the dashboard every 5 minutes.</p>
+            </div>
+            <div>
+              <h3 className="font-sans text-body-md font-bold text-foreground">What does PCII stand for?</h3>
+              <p className="font-sans text-body-sm text-muted mt-1">PCII stands for Parking Congestion Impact Index. It is a proprietary score from 0-100 that measures the severity of traffic disruption caused by illegal parking in a specific H3 cell.</p>
+            </div>
+          </div>
+        </div>
+
         <div className="border border-border bg-surface p-6 mt-8 flex items-center justify-between">
           <div>
             <h2 className="font-mono text-headline-sm text-foreground uppercase tracking-wider mb-2">Need further assistance?</h2>
