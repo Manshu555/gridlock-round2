@@ -19,8 +19,8 @@ export function TopNav() {
   return (
     <header className="fixed top-0 left-0 w-full z-50 flex items-center justify-between px-margin-desktop h-16 bg-background border-b border-border">
       <div className="flex items-center space-x-gutter">
-        <div className="font-sans text-[28px] font-bold text-foreground uppercase tracking-widest">
-          SENTINEL<span className="text-neon">_</span>
+        <div className="font-sans text-[28px] font-bold text-foreground uppercase tracking-widest flex items-baseline">
+          GRIDLOCK<span className="text-neon font-mono text-sm ml-3 tracking-normal lowercase"> ai-powered parking intelligence</span>
         </div>
       </div>
       <div className="flex-1 flex justify-start ml-8">
