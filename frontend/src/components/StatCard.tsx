@@ -8,15 +8,16 @@ export function StatCard({
   sub?: string;
 }) {
   return (
-    <div className="card group">
-      <div className="flex items-start justify-between mb-3">
-        <div className="text-[11px] uppercase tracking-[0.1em] text-slate-500 font-medium">{label}</div>
-        <div className="w-1.5 h-1.5 rounded-full bg-accent/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+    <div className="bg-background border border-border p-6 flex flex-col justify-between">
+      <div className="font-mono text-label-md text-muted uppercase tracking-widest mb-4">
+        {label}
       </div>
-      <div className="stat">{value}</div>
+      <div className="font-mono text-display-massive text-neon tracking-tighter leading-none">
+        {value}
+      </div>
       {sub && (
-        <div className="mt-2 text-xs text-slate-500 flex items-center gap-1.5">
-          <div className="w-1 h-1 rounded-full bg-slate-600" />
+        <div className="font-sans text-label-md text-muted mt-4 uppercase tracking-widest flex items-center">
+          <span className="w-1.5 h-1.5 bg-border mr-2"></span>
           {sub}
         </div>
       )}

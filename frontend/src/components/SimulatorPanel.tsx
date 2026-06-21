@@ -19,119 +19,131 @@ export function SimulatorPanel() {
 
   const chart = data
     ? [
-        { name: "Before", value: data.city_impact_before, fill: "#ef4444" },
-        { name: "After", value: data.city_impact_after, fill: "#22c55e" },
+        { name: "Before", value: data.city_impact_before, fill: "#ffffff" },
+        { name: "After", value: data.city_impact_after, fill: "#FF3B00" },
       ]
     : [];
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+    <div className="grid grid-cols-1 lg:grid-cols-3 gap-px bg-border border border-border">
       {/* Controls Panel */}
-      <div className="card space-y-6">
-        <div>
-          <div className="flex items-center justify-between mb-3">
-            <label className="text-sm font-medium text-white">Top-K Zones</label>
-            <span className="text-accent font-semibold text-lg">{k}</span>
-          </div>
-          <input
-            type="range"
-            min={1}
-            max={50}
-            value={k}
-            onChange={(e) => setK(Number(e.target.value))}
-          />
-          <div className="flex justify-between text-[10px] text-slate-500 mt-1.5 font-mono">
-            <span>1</span>
-            <span>50</span>
-          </div>
-        </div>
+      <div className="bg-background p-8 space-y-8">
+        <div className="border-b border-border pb-8">
+          <div className="font-mono text-label-md text-muted uppercase tracking-widest mb-6">Parameters</div>
 
-        <div>
-          <div className="flex items-center justify-between mb-3">
-            <label className="text-sm font-medium text-white">Compliance Factor</label>
-            <span className="text-accent font-semibold text-lg">{compliance.toFixed(2)}</span>
-          </div>
-          <input
-            type="range"
-            min={0.1}
-            max={1}
-            step={0.05}
-            value={compliance}
-            onChange={(e) => setCompliance(Number(e.target.value))}
-          />
-          <div className="flex justify-between text-[10px] text-slate-500 mt-1.5 font-mono">
-            <span>0.1</span>
-            <span>1.0</span>
+          <div className="space-y-8">
+            <div>
+              <div className="flex items-center justify-between mb-3">
+                <label className="font-mono text-label-md text-muted uppercase tracking-widest">Top-K Zones</label>
+                <span className="font-mono text-headline-lg text-neon">{k}</span>
+              </div>
+              <input
+                type="range"
+                min={1}
+                max={50}
+                value={k}
+                onChange={(e) => setK(Number(e.target.value))}
+                className="w-full accent-neon bg-border h-px appearance-none cursor-pointer"
+                style={{ WebkitAppearance: 'none', accentColor: '#FF3B00' }}
+              />
+              <div className="flex justify-between font-mono text-label-sm text-muted mt-2">
+                <span>01</span>
+                <span>50</span>
+              </div>
+            </div>
+
+            <div>
+              <div className="flex items-center justify-between mb-3">
+                <label className="font-mono text-label-md text-muted uppercase tracking-widest">Compliance</label>
+                <span className="font-mono text-headline-lg text-neon">{compliance.toFixed(2)}</span>
+              </div>
+              <input
+                type="range"
+                min={0.1}
+                max={1}
+                step={0.05}
+                value={compliance}
+                onChange={(e) => setCompliance(Number(e.target.value))}
+                className="w-full h-px appearance-none cursor-pointer"
+                style={{ WebkitAppearance: 'none', accentColor: '#FF3B00' }}
+              />
+              <div className="flex justify-between font-mono text-label-sm text-muted mt-2">
+                <span>0.1</span>
+                <span>1.0</span>
+              </div>
+            </div>
           </div>
         </div>
 
         {data && (
-          <div className="pt-5 border-t border-white/[0.06]">
-            <div className="text-[11px] uppercase tracking-wider text-slate-500 font-medium mb-2">
-              Projected Impact Reduction
+          <div>
+            <div className="font-mono text-label-md text-muted uppercase tracking-widest mb-4">
+              Impact_Reduction
             </div>
-            <div className="flex items-baseline gap-2">
-              <span className="text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-emerald-500">
+            <div className="flex items-baseline gap-1">
+              <span className="font-mono text-display-massive text-neon tracking-tighter">
                 {data.reduction_pct.toFixed(1)}
               </span>
-              <span className="text-2xl text-emerald-400 font-semibold">%</span>
+              <span className="font-mono text-headline-md text-neon">%</span>
             </div>
-            <div className="mt-3 flex items-center gap-2 text-sm text-slate-400">
-              <div className="w-2 h-2 rounded-full bg-emerald-500/30" />
-              {data.violations_addressed.toLocaleString()} violations across {data.cells_cleared} zones
+            <div className="mt-4 font-sans text-body-sm text-muted uppercase">
+              {data.violations_addressed.toLocaleString()} violations · {data.cells_cleared} zones
             </div>
           </div>
         )}
       </div>
 
       {/* Chart Panel */}
-      <div className="card lg:col-span-2">
-        <div className="mb-4">
-          <div className="text-sm font-medium text-white">City-wide Congestion Impact</div>
-          <div className="text-xs text-slate-500 mt-1">Before vs. after enforcement simulation</div>
+      <div className="bg-background p-8 lg:col-span-2">
+        <div className="mb-6 border-b border-border pb-6">
+          <div className="font-mono text-label-md text-muted uppercase tracking-widest mb-1">City_Impact_Simulation</div>
+          <div className="font-sans text-body-sm text-muted">Before vs. after enforcement deployment</div>
         </div>
 
         {isLoading && (
-          <div className="h-[280px] flex items-center justify-center text-slate-400">
-            <div className="animate-pulse-soft">Computing simulation…</div>
+          <div className="h-[280px] flex items-center justify-center">
+            <div className="font-mono text-label-md text-muted uppercase animate-pulse-soft">Computing_simulation…</div>
           </div>
         )}
         {error && (
-          <div className="h-[280px] flex items-center justify-center text-red-400">
-            Failed to load simulation
+          <div className="h-[280px] flex items-center justify-center">
+            <div className="font-mono text-label-md text-neon uppercase">Error: Failed_to_load</div>
           </div>
         )}
         {data && (
           <ResponsiveContainer width="100%" height={280}>
-            <BarChart data={chart} barSize={80}>
+            <BarChart data={chart} barSize={60}>
               <XAxis
                 dataKey="name"
-                stroke="#475569"
-                fontSize={12}
+                stroke="#444444"
+                fontSize={11}
+                fontFamily="monospace"
                 tickLine={false}
-                axisLine={{ stroke: 'rgba(255,255,255,0.06)' }}
+                axisLine={{ stroke: '#333333' }}
               />
               <YAxis
-                stroke="#475569"
+                stroke="#444444"
                 fontSize={11}
+                fontFamily="monospace"
                 tickLine={false}
                 axisLine={false}
                 tickFormatter={(v) => `${(v / 1e6).toFixed(1)}M`}
               />
               <Tooltip
                 contentStyle={{
-                  background: '#161616',
-                  border: '1px solid rgba(255,255,255,0.08)',
-                  borderRadius: '12px',
+                  background: '#0A0A0A',
+                  border: '1px solid #222222',
+                  borderRadius: '0px',
                   padding: '12px 16px',
+                  fontFamily: 'monospace',
                 }}
-                labelStyle={{ color: '#94a3b8', marginBottom: '4px' }}
-                itemStyle={{ color: '#fff' }}
+                labelStyle={{ color: '#666666', marginBottom: '4px', textTransform: 'uppercase', fontSize: '10px', letterSpacing: '0.1em' }}
+                itemStyle={{ color: '#fff', fontFamily: 'monospace' }}
                 formatter={(value: number) => [value.toLocaleString(), 'Impact']}
               />
-              <Bar dataKey="value" radius={[8, 8, 0, 0]}>
-                <Cell fill="#ef4444" fillOpacity={0.8} />
-                <Cell fill="#22c55e" fillOpacity={0.8} />
+              <Bar dataKey="value" radius={[0, 0, 0, 0]}>
+                <Cell fill="#ffffff" fillOpacity={0.6} />
+                <Cell fill="#FF3B00" fillOpacity={0.9} />
               </Bar>
             </BarChart>
           </ResponsiveContainer>

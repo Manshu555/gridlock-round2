@@ -1,65 +1,70 @@
 import type { Config } from "tailwindcss";
 
 const config: Config = {
+  darkMode: "class",
   content: ["./src/**/*.{ts,tsx}"],
   theme: {
     extend: {
       colors: {
-        // Premium dark theme
-        ink: "#0A0A0A",
-        panel: "#111111",
-        surface: "#161616",
-        elevated: "#1a1a1a",
-        accent: "#3b82f6",
-        "accent-soft": "#3b82f620",
-        hot: "#ef4444",
-        warm: "#f59e0b",
-        cool: "#22c55e",
-        // Status colors
-        success: "#22c55e",
-        warning: "#f59e0b",
-        error: "#ef4444",
-        info: "#3b82f6",
-      },
-      fontFamily: {
-        sans: ["Inter", "system-ui", "-apple-system", "sans-serif"],
-        mono: ["JetBrains Mono", "Menlo", "monospace"],
-      },
-      boxShadow: {
-        "card": "0 2px 8px -4px rgba(0, 0, 0, 0.5), 0 4px 16px -8px rgba(0, 0, 0, 0.3)",
-        "card-hover": "0 4px 16px -8px rgba(59, 130, 246, 0.15), 0 8px 24px -12px rgba(0, 0, 0, 0.4)",
-        "nav": "2px 0 16px -4px rgba(0, 0, 0, 0.5)",
-        "glow-accent": "0 0 32px -8px rgba(59, 130, 246, 0.3)",
+        background: "#000000",
+        foreground: "#FFFFFF",
+        surface: "#0A0A0A",
+        border: "#222222",
+        muted: "#666666",
+        neon: "#FF3B00",
       },
       borderRadius: {
-        "card": "16px",
+        "DEFAULT": "0px",
+        "lg": "0px",
+        "xl": "0px",
+        "full": "9999px" // keep full for active ping/dots
+      },
+      spacing: {
+        "xs": "0.25rem",
+        "sm": "0.5rem",
+        "md": "1rem",
+        "lg": "1.5rem",
+        "xl": "2.5rem",
+        "gutter": "1rem",
+        "margin-desktop": "2rem",
+      },
+      fontFamily: {
+        sans: ["Geist", "Inter", "sans-serif"],
+        mono: ["Geist Mono", "JetBrains Mono", "monospace"],
+      },
+      fontSize: {
+        "headline-lg": ["32px", { lineHeight: "1.2", letterSpacing: "-0.04em", fontWeight: "500" }],
+        "headline-md": ["20px", { lineHeight: "1.4", letterSpacing: "-0.02em", fontWeight: "500" }],
+        "headline-sm": ["16px", { lineHeight: "1.4", letterSpacing: "-0.01em", fontWeight: "500" }],
+        "body-lg": ["16px", { lineHeight: "1.6", letterSpacing: "0", fontWeight: "400" }],
+        "body-md": ["14px", { lineHeight: "1.5", letterSpacing: "0", fontWeight: "400" }],
+        "body-sm": ["12px", { lineHeight: "1.4", letterSpacing: "0", fontWeight: "400" }],
+        "label-md": ["12px", { lineHeight: "1", letterSpacing: "0.05em", fontWeight: "600" }],
+        "label-sm": ["10px", { lineHeight: "1", letterSpacing: "0.05em", fontWeight: "600" }],
+        "display-massive": ["64px", { lineHeight: "1", letterSpacing: "-0.05em", fontWeight: "400" }],
       },
       animation: {
         "fade-in": "fadeIn 0.3s ease-out",
-        "slide-up": "slideUp 0.3s ease-out",
-        "scale-in": "scaleIn 0.2s ease-out",
         "pulse-soft": "pulseSoft 2s ease-in-out infinite",
+        "ping": "ping 1.5s cubic-bezier(0, 0, 0.2, 1) infinite",
       },
       keyframes: {
         fadeIn: {
           "0%": { opacity: "0" },
           "100%": { opacity: "1" },
         },
-        slideUp: {
-          "0%": { opacity: "0", transform: "translateY(8px)" },
-          "100%": { opacity: "1", transform: "translateY(0)" },
-        },
-        scaleIn: {
-          "0%": { opacity: "0", transform: "scale(0.95)" },
-          "100%": { opacity: "1", transform: "scale(1)" },
-        },
         pulseSoft: {
           "0%, 100%": { opacity: "1" },
           "50%": { opacity: "0.7" },
         },
+        ping: {
+          "75%, 100%": { transform: "scale(2)", opacity: "0" }
+        }
       },
     },
   },
-  plugins: [],
+  plugins: [
+    require('@tailwindcss/container-queries'),
+  ],
 };
 export default config;

@@ -6,10 +6,8 @@ import type { FeatureCollection } from "@/lib/types";
 
 import "maplibre-gl/dist/maplibre-gl.css";
 
-// Free, no-token basemap (CARTO dark-matter). Override via NEXT_PUBLIC_MAP_STYLE.
-const STYLE =
-  process.env.NEXT_PUBLIC_MAP_STYLE ??
-  "https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json";
+// Use CARTO positron (light) to increase contrast with the dark background.
+const STYLE = "https://basemaps.cartocdn.com/gl/positron-gl-style/style.json";
 
 export function MapView({
   data,
@@ -64,7 +62,7 @@ export function MapView({
         type: "line",
         source: "cells",
         paint: {
-          "line-color": "rgba(255, 255, 255, 0.08)",
+          "line-color": "rgba(0, 0, 0, 0.2)",
           "line-width": 0.5
         },
       });
@@ -80,8 +78,8 @@ export function MapView({
   }, [data, colorBy, onSelect]);
 
   return (
-    <div className="card p-0 overflow-hidden">
-      <div ref={ref} className="h-[520px] w-full" />
+    <div className="h-full w-full overflow-hidden">
+      <div ref={ref} className="h-full w-full" />
     </div>
   );
 }
