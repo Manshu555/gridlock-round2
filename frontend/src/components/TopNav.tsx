@@ -21,10 +21,7 @@ export function TopNav() {
       <div className="flex items-center space-x-gutter">
         <div className="flex flex-col justify-center">
           <div className="font-sans text-[32px] font-bold text-foreground uppercase tracking-widest leading-none">
-            SENTINEL<span className="text-neon">_</span>
-          </div>
-          <div className="font-sans text-sm font-medium text-neon tracking-wide mt-1">
-            Hotspot Detection
+            SENTINEL<span className="text-[#FF0000]">_</span>
           </div>
         </div>
       </div>
