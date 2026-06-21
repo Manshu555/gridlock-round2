@@ -1,8 +1,12 @@
 "use client";
 import { MapView } from "@/components/MapView";
 import { useAnalytics, useHotspots, usePriorityZones, useSimulation } from "@/hooks/useApi";
+import { useSearchParams } from "next/navigation";
 
 export default function Dashboard() {
+  const searchParams = useSearchParams();
+  const searchQuery = searchParams.get("q");
+
   const { data: hotspots, isLoading: mapLoading } = useHotspots();
   const { data: analytics, isLoading: analyticsLoading, error: analyticsError } = useAnalytics();
   const { data: zones } = usePriorityZones(10);
@@ -74,10 +78,10 @@ export default function Dashboard() {
           <div className="border-l-4 border-neon pl-4 mb-10">
             <div className="font-mono text-label-md text-muted mb-2 uppercase tracking-widest">Selected_Region</div>
             <div className="font-sans text-headline-sm text-foreground uppercase tracking-wide">
-              Koramangala 80ft Rd
+              {searchQuery || "Koramangala 80ft Rd"}
             </div>
             <div className="font-mono text-body-sm text-muted mt-2">
-              IDX: 8a60144062dffff
+              {searchQuery ? "Search Result" : "IDX: 8a60144062dffff"}
             </div>
           </div>
           

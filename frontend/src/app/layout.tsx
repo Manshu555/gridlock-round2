@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 
 import { Nav } from "@/components/Nav";
 import { TopNav } from "@/components/TopNav";
+import { Suspense } from "react";
 
 import "./globals.css";
 import { Providers } from "./providers";
@@ -21,7 +22,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <div className="flex flex-1 mt-16 h-[calc(100vh-64px)] overflow-hidden">
             <Nav />
             <main className="ml-64 flex-1 flex overflow-hidden">
-              {children}
+              <Suspense fallback={<div className="p-8 font-mono text-neon">Loading...</div>}>
+                {children}
+              </Suspense>
             </main>
           </div>
         </Providers>
