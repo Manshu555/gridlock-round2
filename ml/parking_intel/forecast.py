@@ -95,15 +95,19 @@ def train_forecast(df_events: pd.DataFrame) -> tuple[object, dict, pd.DataFrame]
     mase = mae / naive_err if naive_err > 1e-9 else float("nan")
 
     # Classification metrics
-    from sklearn.metrics import f1_score, precision_score, recall_score, roc_auc_score
+    from sklearn.metrics import f1_score
+    from sklearn.metrics import precision_score
+    from sklearn.metrics import recall_score
+    from sklearn.metrics import roc_auc_score
+
     y_true_bin = (test["violations"].to_numpy() > 0).astype(int)
     y_pred_bin = (pred > 0.5).astype(int)
-    
+
     try:
         auc_roc = float(roc_auc_score(y_true_bin, pred))
     except Exception:
         auc_roc = 0.5
-        
+
     f1 = float(f1_score(y_true_bin, y_pred_bin, zero_division=0))
     precision = float(precision_score(y_true_bin, y_pred_bin, zero_division=0))
     recall = float(recall_score(y_true_bin, y_pred_bin, zero_division=0))
