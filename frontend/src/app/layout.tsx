@@ -8,8 +8,8 @@ import "./globals.css";
 import { Providers } from "./providers";
 
 export const metadata: Metadata = {
-  title: "Gridlock - AI-Powered Parking Intelligence",
-  description: "Detect and forecast parking violations.",
+  title: "SENTINEL - Hotspot Detection",
+  description: "AI-powered parking-violation hotspots, congestion impact, forecasting, and enforcement prioritization.",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

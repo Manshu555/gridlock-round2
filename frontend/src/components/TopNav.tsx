@@ -21,10 +21,10 @@ export function TopNav() {
       <div className="flex items-center space-x-gutter">
         <div className="flex flex-col justify-center">
           <div className="font-sans text-[32px] font-bold text-foreground uppercase tracking-widest leading-none">
-            GRIDLOCK
+            SENTINEL<span className="text-neon">_</span>
           </div>
           <div className="font-sans text-sm font-medium text-neon tracking-wide mt-1">
-            AI-Powered Parking Intelligence
+            Hotspot Detection
           </div>
         </div>
       </div>

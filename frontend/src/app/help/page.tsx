@@ -6,7 +6,7 @@ export default function HelpPage() {
         <div className="font-mono text-label-md text-muted uppercase tracking-widest mb-2">Module / Help & Documentation</div>
         <h1 className="font-sans text-headline-lg text-foreground uppercase tracking-tight">System_Help</h1>
         <p className="font-sans text-body-md text-muted mt-2">
-          Documentation and guidance on using the Gridlock AI-Powered Parking Intelligence platform.
+          Documentation and guidance on using the Sentinel Hotspot Detection platform.
         </p>
       </div>
 
