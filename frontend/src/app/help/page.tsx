@@ -15,14 +15,14 @@ export default function HelpPage() {
         <div className="border border-border bg-surface p-6">
           <h2 className="font-mono text-headline-md text-neon uppercase tracking-wider mb-4">1. Dashboard & Overview</h2>
           <p className="font-sans text-body-md text-muted leading-relaxed">
-            The Overview page provides a bird's-eye view of all recorded violations across the city. Use the top filters to narrow down the time window (Today, Last 7 Days, Last 30 Days) or the type of violation (Double Parking, No Parking Zone). The map aggregates data into H3 hexagonal cells for density analysis.
+            The Overview page provides a bird&apos;s-eye view of all recorded violations across the city. Use the top filters to narrow down the time window (Today, Last 7 Days, Last 30 Days) or the type of violation (Double Parking, No Parking Zone). The map aggregates data into H3 hexagonal cells for density analysis.
           </p>
         </div>
 
         <div className="border border-border bg-surface p-6">
           <h2 className="font-mono text-headline-md text-neon uppercase tracking-wider mb-4">2. Hotspot Detection</h2>
           <p className="font-sans text-body-md text-muted leading-relaxed">
-            This module highlights statistically significant spatial clusters of parking violations using the Getis-Ord Gi* statistic. Toggle "Significant Only" to filter out low-confidence clusters, and use the "Color By" dropdown to switch between raw cluster intensity (Gi*) and the calculated PCII (Parking Congestion Impact Index) score.
+            This module highlights statistically significant spatial clusters of parking violations using the Getis-Ord Gi* statistic. Toggle &quot;Significant Only&quot; to filter out low-confidence clusters, and use the &quot;Color By&quot; dropdown to switch between raw cluster intensity (Gi*) and the calculated PCII (Parking Congestion Impact Index) score.
           </p>
         </div>
 
