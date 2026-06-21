@@ -3,61 +3,50 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 const LINKS = [
-  { href: "/", label: "Dashboard" },
-  { href: "/hotspots", label: "Hotspots" },
-  { href: "/forecast", label: "Forecast" },
-  { href: "/priorities", label: "Priority Zones" },
-  { href: "/simulator", label: "Simulator" },
-  { href: "/analytics", label: "Analytics" },
+  { href: "/", label: "Overview", icon: "dashboard" },
+  { href: "/hotspots", label: "Hotspot Detection", icon: "location_on" },
+  { href: "/forecast", label: "Congestion Impact", icon: "traffic" },
+  { href: "/priorities", label: "Forecasting", icon: "trending_up" },
+  { href: "/enforcement", label: "Enforcement Ranking", icon: "gavel" },
+  { href: "/simulator", label: "Simulator", icon: "model_training" },
 ];
 
 export function Nav() {
   const path = usePathname();
+  
   return (
-    <aside className="w-60 shrink-0 min-h-screen relative">
-      {/* Glassmorphic background */}
-      <div className="sticky top-0 h-screen overflow-y-auto">
-        <div className="absolute inset-0 bg-gradient-to-br from-white/[0.03] to-transparent border-r border-white/[0.06]" />
-        <div className="relative p-5">
-          {/* Logo */}
-          <div className="mb-8">
-            <div className="flex items-center gap-3 mb-1">
-              <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-accent to-accent/60 flex items-center justify-center shadow-glow-accent">
-                <svg className="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-              </div>
-              <div>
-                <div className="text-lg font-semibold tracking-tight text-white">Gridlock</div>
-                <div className="text-[10px] uppercase tracking-[0.2em] text-slate-500 font-medium">Parking Intelligence</div>
-              </div>
-            </div>
-          </div>
-
-          {/* Navigation */}
-          <nav className="space-y-1">
-            {LINKS.map((l) => {
-              const active = path === l.href;
-              return (
-                <Link
-                  key={l.href}
-                  href={l.href}
-                  className={`flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-all duration-200 ${
-                    active
-                      ? "bg-accent/10 text-accent border border-accent/20"
-                      : "text-slate-400 hover:text-white hover:bg-white/[0.04] border border-transparent"
-                  }`}
-                >
-                  {l.label}
-                  {active && (
-                    <div className="ml-auto w-1.5 h-1.5 rounded-full bg-accent" />
-                  )}
-                </Link>
-              );
-            })}
-          </nav>
-        </div>
+    <nav className="fixed left-0 top-16 h-[calc(100vh-64px)] w-64 flex flex-col py-6 px-0 z-40 bg-background border-r border-border">
+      <div className="flex-1 space-y-0 mt-8">
+        {LINKS.map((l) => {
+          const active = path === l.href || (path === "/" && l.href === "/hotspots");
+          
+          if (active) {
+            return (
+              <Link key={l.href} href={l.href} className="flex items-center space-x-3 px-6 py-3 border-l-2 border-neon bg-surface text-foreground transition-all duration-200">
+                <span className="material-symbols-outlined text-[18px]" style={{ fontVariationSettings: "'FILL' 1" }}>{l.icon}</span>
+                <span className="font-mono text-label-md uppercase tracking-wider">{l.label}</span>
+              </Link>
+            );
+          }
+          
+          return (
+            <Link key={l.href} href={l.href} className="flex items-center space-x-3 px-6 py-3 border-l-2 border-transparent text-muted hover:text-foreground hover:bg-surface transition-all group">
+              <span className="material-symbols-outlined text-[18px] group-hover:text-foreground">{l.icon}</span>
+              <span className="font-mono text-label-md uppercase tracking-wider">{l.label}</span>
+            </Link>
+          );
+        })}
       </div>
-    </aside>
+      <div className="mt-auto space-y-0 pt-4 border-t border-border">
+        <Link href="/analytics" className="flex items-center space-x-3 px-6 py-3 border-l-2 border-transparent text-muted hover:text-foreground hover:bg-surface transition-all group">
+          <span className="material-symbols-outlined text-[18px] group-hover:text-foreground">analytics</span>
+          <span className="font-mono text-label-md uppercase tracking-wider">System Status</span>
+        </Link>
+        <Link href="/help" className="flex items-center space-x-3 px-6 py-3 border-l-2 border-transparent text-muted hover:text-foreground hover:bg-surface transition-all group">
+          <span className="material-symbols-outlined text-[18px] group-hover:text-foreground">help</span>
+          <span className="font-mono text-label-md uppercase tracking-wider">Help</span>
+        </Link>
+      </div>
+    </nav>
   );
 }

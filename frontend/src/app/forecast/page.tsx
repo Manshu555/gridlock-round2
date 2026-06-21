@@ -8,48 +8,49 @@ export default function ForecastPage() {
   const metrics = (data?.metrics ?? {}) as Record<string, number | string>;
 
   return (
-    <div className="space-y-8">
+    <div className="p-10 overflow-y-auto flex-1 space-y-10">
       {/* Header */}
-      <div>
-        <h1 className="text-3xl font-semibold text-white tracking-tight">Hotspot Forecast</h1>
-        <p className="text-slate-500 text-sm mt-1.5">
-          LightGBM next-window violation-intensity forecast with temporal holdout validation
+      <div className="border-b border-border pb-8">
+        <div className="font-mono text-label-md text-muted uppercase tracking-widest mb-2">Module / Forecasting</div>
+        <h1 className="font-sans text-headline-lg text-foreground uppercase tracking-tight">Hotspot_Forecast</h1>
+        <p className="font-sans text-body-md text-muted mt-2">
+          LightGBM next-window violation-intensity forecast · temporal holdout validation
         </p>
       </div>
 
       {/* Metrics */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-px bg-border border border-border">
         <StatCard
-          label="Model Backend"
+          label="Model_Backend"
           value={String(metrics.backend ?? "—").toUpperCase()}
         />
         <StatCard
-          label="Mean Absolute Error"
+          label="MAE"
           value={metrics.mae ?? "—"}
         />
         <StatCard
-          label="Root Mean Square Error"
+          label="RMSE"
           value={metrics.rmse ?? "—"}
         />
         <StatCard
-          label="MASE Score"
+          label="MASE_Score"
           value={metrics.mase_vs_seasonal_naive ?? "—"}
-          sub="< 1 beats seasonal naïve"
+          sub="< 1 beats seasonal naive"
         />
       </div>
 
       {/* Chart */}
       {isLoading && (
-        <div className="card flex items-center justify-center h-[400px]">
-          <div className="text-slate-400 animate-pulse-soft">Loading forecast data…</div>
+        <div className="border border-border flex items-center justify-center h-[400px]">
+          <div className="font-mono text-label-md text-muted uppercase animate-pulse-soft">Loading_forecast_data…</div>
         </div>
       )}
       {data?.points?.length ? (
         <ForecastChart points={data.points} />
       ) : (
         !isLoading && (
-          <div className="card flex items-center justify-center h-[400px]">
-            <div className="text-slate-500">No forecast data available</div>
+          <div className="border border-border flex items-center justify-center h-[400px]">
+            <div className="font-mono text-label-md text-muted uppercase">No_forecast_data_available</div>
           </div>
         )
       )}

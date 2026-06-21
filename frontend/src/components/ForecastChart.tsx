@@ -25,58 +25,69 @@ export function ForecastChart({ points }: { points: ForecastPoint[] }) {
   const data = Array.from(byDate.values()).sort((a, b) => a.date.localeCompare(b.date));
 
   return (
-    <div className="card">
-      <div className="mb-4">
-        <div className="text-sm font-medium text-white">Forecast vs. Actual</div>
-        <div className="text-xs text-slate-500 mt-1">City-wide daily violations, holdout period</div>
+    <div className="border border-border bg-background p-6">
+      <div className="mb-6 flex items-start justify-between border-b border-border pb-6">
+        <div>
+          <div className="font-mono text-label-md text-muted uppercase tracking-widest mb-1">Forecast_vs_Actual</div>
+          <div className="font-sans text-body-sm text-muted">City-wide daily violations · holdout period</div>
+        </div>
+        <div className="flex items-center gap-6">
+          <div className="flex items-center gap-2">
+            <div className="w-6 h-px bg-foreground"></div>
+            <span className="font-mono text-label-sm text-muted uppercase">Actual</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="w-6 h-px bg-neon border-dashed border-t border-neon"></div>
+            <span className="font-mono text-label-sm text-neon uppercase">Predicted</span>
+          </div>
+        </div>
       </div>
       <ResponsiveContainer width="100%" height={340}>
         <LineChart data={data} margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>
           <CartesianGrid
-            stroke="rgba(255,255,255,0.04)"
+            stroke="rgba(255,255,255,0.06)"
             vertical={false}
           />
           <XAxis
             dataKey="date"
-            stroke="#475569"
+            stroke="#444444"
             fontSize={11}
+            fontFamily="monospace"
             tickLine={false}
-            axisLine={{ stroke: 'rgba(255,255,255,0.06)' }}
+            axisLine={{ stroke: '#333333' }}
           />
           <YAxis
-            stroke="#475569"
+            stroke="#444444"
             fontSize={11}
+            fontFamily="monospace"
             tickLine={false}
             axisLine={false}
           />
           <Tooltip
             contentStyle={{
-              background: '#161616',
-              border: '1px solid rgba(255,255,255,0.08)',
-              borderRadius: '12px',
+              background: '#0A0A0A',
+              border: '1px solid #222222',
+              borderRadius: '0px',
               padding: '12px 16px',
+              fontFamily: 'monospace',
             }}
-            labelStyle={{ color: '#94a3b8', marginBottom: '4px' }}
-            itemStyle={{ color: '#fff' }}
+            labelStyle={{ color: '#666666', marginBottom: '4px', textTransform: 'uppercase', fontSize: '10px', letterSpacing: '0.1em' }}
+            itemStyle={{ color: '#fff', fontFamily: 'monospace' }}
           />
-          <Legend
-            wrapperStyle={{ paddingTop: '16px' }}
-            iconType="circle"
-            iconSize={8}
-          />
+          <Legend wrapperStyle={{ display: 'none' }} />
           <Line
             type="monotone"
             dataKey="actual"
-            stroke="#3b82f6"
-            strokeWidth={2.5}
+            stroke="#ffffff"
+            strokeWidth={2}
             dot={false}
             name="Actual"
           />
           <Line
             type="monotone"
             dataKey="predicted"
-            stroke="#f59e0b"
-            strokeWidth={2.5}
+            stroke="#FF3B00"
+            strokeWidth={2}
             strokeDasharray="6 4"
             dot={false}
             name="Predicted"

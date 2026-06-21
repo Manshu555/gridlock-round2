@@ -26,26 +26,27 @@ export default function AnalyticsPage() {
   const monthly = toBars(profile.monthly_counts, 24);
 
   return (
-    <div className="space-y-8">
+    <div className="p-10 overflow-y-auto flex-1 space-y-10">
       {/* Header */}
-      <div>
-        <h1 className="text-3xl font-semibold text-white tracking-tight">Analytics</h1>
-        <p className="text-slate-500 text-sm mt-1.5">
+      <div className="border-b border-border pb-8">
+        <div className="font-mono text-label-md text-muted uppercase tracking-widest mb-2">Module / Analytics</div>
+        <h1 className="font-sans text-headline-lg text-foreground uppercase tracking-tight">Analytics_</h1>
+        <p className="font-sans text-body-md text-muted mt-2">
           Descriptive statistics from the violation dataset
         </p>
       </div>
 
       {isLoading && (
-        <div className="card flex items-center justify-center h-[200px]">
-          <div className="text-slate-400 animate-pulse-soft">Loading analytics…</div>
+        <div className="border border-border flex items-center justify-center h-[200px]">
+          <div className="font-mono text-label-md text-muted uppercase animate-pulse-soft">Loading_analytics…</div>
         </div>
       )}
 
       {!isLoading && (
-        <div className="grid gap-6">
-          <Chart title="Top Violation Types" data={violationTypes} />
-          <Chart title="Top Police Stations (Enforcement Zones)" data={stations} />
-          <Chart title="Monthly Violation Volume" data={monthly} />
+        <div className="grid gap-px bg-border border border-border">
+          <Chart title="Violation_Types" data={violationTypes} />
+          <Chart title="Police_Stations" data={stations} />
+          <Chart title="Monthly_Volume" data={monthly} />
         </div>
       )}
     </div>
@@ -54,10 +55,10 @@ export default function AnalyticsPage() {
 
 function Chart({ title, data }: { title: string; data: { name: string; value: number }[] }) {
   return (
-    <div className="card">
-      <div className="mb-4">
-        <div className="text-sm font-medium text-white">{title}</div>
-        <div className="text-xs text-slate-500 mt-1">{data.length} categories</div>
+    <div className="bg-background p-6">
+      <div className="mb-6 border-b border-border pb-6 flex items-end justify-between">
+        <div className="font-mono text-label-md text-muted uppercase tracking-widest">{title}</div>
+        <div className="font-mono text-label-sm text-muted">{data.length}_categories</div>
       </div>
       <ResponsiveContainer width="100%" height={300}>
         <BarChart data={data} layout="vertical" margin={{ left: 16, right: 16, top: 8, bottom: 8 }}>
@@ -67,37 +68,40 @@ function Chart({ title, data }: { title: string; data: { name: string; value: nu
           />
           <XAxis
             type="number"
-            stroke="#475569"
+            stroke="#444444"
             fontSize={11}
+            fontFamily="monospace"
             tickLine={false}
-            axisLine={{ stroke: 'rgba(255,255,255,0.06)' }}
+            axisLine={{ stroke: '#333333' }}
             tickFormatter={(v) => v >= 1000 ? `${(v / 1000).toFixed(0)}K` : v}
           />
           <YAxis
             type="category"
             dataKey="name"
             width={140}
-            stroke="#475569"
+            stroke="#444444"
             fontSize={11}
+            fontFamily="monospace"
             tickLine={false}
             axisLine={false}
           />
           <Tooltip
             contentStyle={{
-              background: '#161616',
-              border: '1px solid rgba(255,255,255,0.08)',
-              borderRadius: '12px',
+              background: '#0A0A0A',
+              border: '1px solid #222222',
+              borderRadius: '0px',
               padding: '12px 16px',
+              fontFamily: 'monospace',
             }}
-            labelStyle={{ color: '#94a3b8', marginBottom: '4px' }}
-            itemStyle={{ color: '#fff' }}
+            labelStyle={{ color: '#666666', marginBottom: '4px', textTransform: 'uppercase', fontSize: '10px', letterSpacing: '0.1em' }}
+            itemStyle={{ color: '#fff', fontFamily: 'monospace' }}
             formatter={(value: number) => [value.toLocaleString(), 'Count']}
           />
           <Bar
             dataKey="value"
-            fill="#3b82f6"
+            fill="#FF3B00"
             fillOpacity={0.8}
-            radius={[0, 6, 6, 0]}
+            radius={[0, 0, 0, 0]}
           />
         </BarChart>
       </ResponsiveContainer>
