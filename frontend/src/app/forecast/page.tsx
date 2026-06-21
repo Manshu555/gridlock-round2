@@ -34,12 +34,8 @@ export default function ForecastPage() {
           value={metrics.f1 ?? "—"}
         />
         <StatCard
-          label="Precision_Recall"
-          value={
-            metrics.precision !== undefined && metrics.recall !== undefined
-              ? `${metrics.precision} / ${metrics.recall}`
-              : "— / —"
-          }
+          label="RMSE"
+          value={metrics.rmse ?? "—"}
         />
       </div>
 
