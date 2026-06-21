@@ -5,9 +5,8 @@ import { usePathname } from "next/navigation";
 const LINKS = [
   { href: "/", label: "Overview", icon: "dashboard" },
   { href: "/hotspots", label: "Hotspot Detection", icon: "location_on" },
-  { href: "/forecast", label: "Congestion Impact", icon: "traffic" },
-  { href: "/priorities", label: "Forecasting", icon: "trending_up" },
-  { href: "/enforcement", label: "Enforcement Ranking", icon: "gavel" },
+  { href: "/forecast", label: "Forecasting", icon: "trending_up" },
+  { href: "/priorities", label: "Enforcement Ranking", icon: "gavel" },
   { href: "/simulator", label: "Simulator", icon: "model_training" },
 ];
 

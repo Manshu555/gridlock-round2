@@ -12,7 +12,7 @@ export function StatCard({
       <div className="font-mono text-label-md text-muted uppercase tracking-widest mb-4">
         {label}
       </div>
-      <div className="font-mono text-display-massive text-neon tracking-tighter leading-none">
+      <div className="font-mono text-display-massive text-neon tracking-tighter leading-none truncate" title={String(value)}>
         {value}
       </div>
       {sub && (
