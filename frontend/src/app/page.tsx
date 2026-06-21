@@ -27,18 +27,18 @@ export default function Dashboard() {
           <div className="bg-background border border-border flex space-x-2 pointer-events-auto shadow-xl">
             <div className="relative">
               <select className="appearance-none bg-transparent text-foreground font-mono text-label-md rounded-none pl-4 pr-10 py-3 focus:outline-none cursor-pointer">
-                <option>Today</option>
-                <option>Last 7 Days</option>
-                <option>Last 30 Days</option>
+                <option className="bg-border text-foreground">Today</option>
+                <option className="bg-border text-foreground">Last 7 Days</option>
+                <option className="bg-border text-foreground">Last 30 Days</option>
               </select>
               <span className="material-symbols-outlined absolute right-3 top-3 text-muted pointer-events-none">expand_more</span>
             </div>
             <div className="w-px bg-border my-auto h-8"></div>
             <div className="relative">
               <select className="appearance-none bg-transparent text-foreground font-mono text-label-md rounded-none pl-4 pr-10 py-3 focus:outline-none cursor-pointer">
-                <option>All Violations</option>
-                <option>Double Parking</option>
-                <option>No Parking Zone</option>
+                <option className="bg-border text-foreground">All Violations</option>
+                <option className="bg-border text-foreground">Double Parking</option>
+                <option className="bg-border text-foreground">No Parking Zone</option>
               </select>
               <span className="material-symbols-outlined absolute right-3 top-3 text-muted pointer-events-none">expand_more</span>
             </div>
