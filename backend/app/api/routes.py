@@ -4,14 +4,13 @@ from __future__ import annotations
 import math
 
 import pandas as pd
-from fastapi import APIRouter, Depends, HTTPException, Query
+from fastapi import APIRouter, HTTPException, Query
 from fastapi.responses import JSONResponse
 from sqlalchemy.orm import Session
 
 from app import __version__
 from app.core.config import settings
 from app.models.schemas import (
-    ForecastPoint,
     HealthResponse,
     PriorityZone,
     SimulationResponse,

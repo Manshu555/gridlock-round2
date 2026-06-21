@@ -23,7 +23,7 @@ def _fallback(agg: pd.DataFrame) -> pd.DataFrame:
     v = out["violations"].to_numpy(dtype=float)
     vnorm = (v - v.min()) / (np.ptp(v) + 1e-9)
     classes = []
-    for share, vn in zip(out["near_junction_share"].to_numpy(), vnorm):
+    for share, vn in zip(out["near_junction_share"].to_numpy(), vnorm, strict=False):
         if share > 0.4 or vn > 0.75:
             classes.append("primary")
         elif share > 0.15 or vn > 0.4:
@@ -43,7 +43,6 @@ def enrich(agg: pd.DataFrame, bbox: dict | None = None) -> pd.DataFrame:
     """Enrich cells with road attributes. Tries OSMnx, falls back to defaults."""
     try:
         import osmnx as ox  # type: ignore
-        from shapely.geometry import Point  # type: ignore
     except Exception:
         return _fallback(agg)
 
@@ -68,7 +67,7 @@ def enrich(agg: pd.DataFrame, bbox: dict | None = None) -> pd.DataFrame:
 
         out = agg.copy()
         rc, ln = [], []
-        for lat, lon in zip(out["cell_lat"], out["cell_lon"]):
+        for lat, lon in zip(out["cell_lat"], out["cell_lon"], strict=False):
             cls, lanes = nearest_attrs(lat, lon)
             cls = cls if cls in ROAD_CLASS_DEFAULTS else DEFAULT_ROAD_CLASS
             rc.append(cls)

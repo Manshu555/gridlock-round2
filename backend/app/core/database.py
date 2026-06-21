@@ -7,7 +7,6 @@ from __future__ import annotations
 
 import logging
 from collections.abc import Generator
-from typing import Optional
 
 from sqlalchemy import create_engine, text
 from sqlalchemy.orm import DeclarativeBase, Session, sessionmaker
@@ -28,7 +27,7 @@ class Base(DeclarativeBase):
 # ---------------------------------------------------------------------------
 
 _engine = None
-_SessionLocal: Optional[sessionmaker] = None  # type: ignore[type-arg]
+_SessionLocal: sessionmaker | None = None  # type: ignore[type-arg]
 
 
 def get_engine():

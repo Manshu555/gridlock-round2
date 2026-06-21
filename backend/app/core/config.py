@@ -2,7 +2,6 @@
 from __future__ import annotations
 
 from pathlib import Path
-from typing import Optional
 
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
@@ -20,7 +19,7 @@ class Settings(BaseSettings):
     log_level: str = "INFO"
     # PostgreSQL connection string — set via GRIDLOCK_DATABASE_URL env var
     # Example: postgresql://user:pass@ep-xxx.neon.tech/neondb?sslmode=require
-    database_url: Optional[str] = None
+    database_url: str | None = None
 
     @property
     def cors_list(self) -> list[str]:

@@ -23,8 +23,6 @@ import json
 import logging
 from pathlib import Path
 
-import pandas as pd
-
 from . import data as data_mod
 from . import eps as eps_mod
 from . import forecast as forecast_mod

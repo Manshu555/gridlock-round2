@@ -3,8 +3,6 @@ from __future__ import annotations
 
 import json
 
-import pandas as pd
-
 from parking_intel import data as data_mod
 from parking_intel import forecast as forecast_mod
 from parking_intel.config import SETTINGS

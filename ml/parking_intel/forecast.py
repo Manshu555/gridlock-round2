@@ -95,7 +95,7 @@ def train_forecast(df_events: pd.DataFrame) -> tuple[object, dict, pd.DataFrame]
     mase = mae / naive_err if naive_err > 1e-9 else float("nan")
 
     # Classification metrics
-    from sklearn.metrics import roc_auc_score, f1_score, precision_score, recall_score
+    from sklearn.metrics import f1_score, precision_score, recall_score, roc_auc_score
     y_true_bin = (test["violations"].to_numpy() > 0).astype(int)
     y_pred_bin = (pred > 0.5).astype(int)
     
@@ -135,6 +135,6 @@ def shap_summary(model, sample: pd.DataFrame) -> dict | None:
         explainer = shap.TreeExplainer(model)
         vals = explainer.shap_values(sample[FEATURES].head(500))
         importance = np.abs(vals).mean(axis=0)
-        return {f: round(float(v), 4) for f, v in zip(FEATURES, importance)}
+        return {f: round(float(v), 4) for f, v in zip(FEATURES, importance, strict=False)}
     except Exception:
         return None

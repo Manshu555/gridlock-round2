@@ -2,7 +2,6 @@
 from __future__ import annotations
 
 import pandas as pd
-
 from parking_intel import data as data_mod
 from parking_intel import eps as eps_mod
 from parking_intel import hotspots as hotspots_mod

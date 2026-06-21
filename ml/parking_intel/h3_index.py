@@ -4,10 +4,9 @@ Uses h3 v4 API (latlng_to_cell, cell_to_boundary, cell_to_latlng, grid_disk).
 """
 from __future__ import annotations
 
+import h3
 import numpy as np
 import pandas as pd
-
-import h3
 
 from .config import (
     DEFAULT_FOOTPRINT,
@@ -22,7 +21,7 @@ def assign_cells(df: pd.DataFrame, resolution: int) -> pd.DataFrame:
     df = df.copy()
     df["h3"] = [
         h3.latlng_to_cell(lat, lon, resolution)
-        for lat, lon in zip(df["latitude"].to_numpy(), df["longitude"].to_numpy())
+        for lat, lon in zip(df["latitude"].to_numpy(), df["longitude"].to_numpy(), strict=False)
     ]
     return df
 

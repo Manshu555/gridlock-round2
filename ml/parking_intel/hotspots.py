@@ -110,12 +110,12 @@ def morans_i(agg: pd.DataFrame, value_col: str = "violations") -> dict:
             num += z[i] * z[j]
             w_sum += 1.0
     denom = (z**2).sum()
-    I = (n / w_sum) * (num / denom) if w_sum > 0 and denom > 0 else 0.0
+    moran_i = (n / w_sum) * (num / denom) if w_sum > 0 and denom > 0 else 0.0
     expected = -1.0 / (n - 1)
     return {
-        "morans_i": round(float(I), 4),
+        "morans_i": round(float(moran_i), 4),
         "expected": round(expected, 4),
-        "interpretation": "clustered" if I > expected else "dispersed",
+        "interpretation": "clustered" if moran_i > expected else "dispersed",
     }
 
 
@@ -127,7 +127,7 @@ def gi_star_pysal(agg: pd.DataFrame, value_col: str = "violations") -> pd.DataFr
         from libpysal.weights import KNN
     except Exception:
         return None
-    coords = list(zip(agg["cell_lat"], agg["cell_lon"]))
+    coords = list(zip(agg["cell_lat"], agg["cell_lon"], strict=False))
     w = KNN.from_array(np.array(coords), k=6)
     g = G_Local(agg[value_col].to_numpy(dtype=float), w, star=True)
     out = agg.copy()

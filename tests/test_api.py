@@ -5,10 +5,8 @@ and exercises every endpoint with FastAPI's TestClient.
 """
 from __future__ import annotations
 
-import pandas as pd
 import pytest
 from fastapi.testclient import TestClient
-
 from parking_intel import data as data_mod
 from parking_intel import eps as eps_mod
 from parking_intel import hotspots as hotspots_mod
@@ -30,7 +28,7 @@ def client(tmp_path_factory, _synthetic):
          "police_station", "top_violation"],
         out / "hotspots.geojson",
     )
-    (out / "metrics.json").write_text('{"n_cells": %d}' % len(scored))
+    (out / "metrics.json").write_text(f'{{"n_cells": {len(scored)}}}')
 
     # point the data store at the temp outputs
     from app.core import config as backend_config
