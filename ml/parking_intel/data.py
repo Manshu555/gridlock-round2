@@ -42,9 +42,29 @@ def load_raw(path: str | Path) -> pd.DataFrame:
     return df
 
 
-def clean(df: pd.DataFrame) -> pd.DataFrame:
-    """Clean + normalize. Returns one row per violation event with engineered fields."""
+def clean(df: pd.DataFrame, *, keep_unreviewed: bool = True) -> pd.DataFrame:
+    """Clean + normalize. Returns one row per violation event with engineered fields.
+
+    Args:
+        keep_unreviewed: if True keep rows whose ``validation_status`` is NULL/unreviewed;
+            if False keep only explicitly ``approved`` rows. Explicitly ``rejected`` /
+            ``duplicate`` challans are always dropped so they never inflate hotspots.
+    """
     df = df.copy()
+
+    # --- validation status filter (drop officially-invalid challans) ---
+    # Report data mixes approved, rejected and duplicate challans. Counting rejected
+    # rows inflates every downstream score, so we exclude them up front.
+    if "validation_status" in df.columns:
+        status = df["validation_status"].astype(str).str.strip().str.lower()
+        is_rejected = status.isin({"rejected", "duplicate"})
+        is_approved = status == "approved"
+        is_unreviewed = df["validation_status"].isna() | status.isin(
+            {s.lower() for s in RAW_NULLS}
+        )
+        keep = is_approved | (is_unreviewed if keep_unreviewed else False)
+        keep = keep & ~is_rejected
+        df = df[keep].copy()
 
     # --- coordinates ---
     for col in ("latitude", "longitude"):
@@ -103,10 +123,19 @@ def profile(df_raw: pd.DataFrame, df_clean: pd.DataFrame) -> dict:
     def top(series: pd.Series, n: int = 15) -> dict:
         return {str(k): int(v) for k, v in series.value_counts().head(n).items()}
 
+    # Validation-filter accounting (how many officially-invalid challans were removed)
+    rows_rejected = 0
+    if "validation_status" in df_raw.columns:
+        status_raw = df_raw["validation_status"].astype(str).str.strip().str.lower()
+        rows_rejected = int(status_raw.isin({"rejected", "duplicate"}).sum())
+
     return {
         "rows_raw": int(len(df_raw)),
         "rows_clean": int(len(df_clean)),
         "rows_dropped": int(len(df_raw) - len(df_clean)),
+        "validation_filter_applied": "validation_status" in df_raw.columns,
+        "rows_rejected_by_validation": rows_rejected,
+        "pct_rejected": round(100.0 * rows_rejected / max(len(df_raw), 1), 2),
         "date_min": str(df_clean["created_datetime"].min()),
         "date_max": str(df_clean["created_datetime"].max()),
         "coordinate_completeness_pct": round(
@@ -126,5 +155,6 @@ def profile(df_raw: pd.DataFrame, df_clean: pd.DataFrame) -> dict:
             "created_datetime parsed to UTC then converted to IST for temporal features.",
             "violation_type parsed from JSON array (multi-label).",
             "Report-based data is patrol-sampled: absence of records != absence of violations.",
+            "Rejected/duplicate challans excluded via validation_status before scoring.",
         ],
     }

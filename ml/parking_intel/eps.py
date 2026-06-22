@@ -25,7 +25,10 @@ def compute(agg: pd.DataFrame, weights: EPSWeights | None = None) -> pd.DataFram
     w = weights or EPSWeights()
     out = agg.copy()
 
-    freq_100 = _minmax_100(out["violations"])
+    # Frequency component prefers the patrol-debiased violation_rate so the ranking
+    # is not a raw violation-count sort; falls back to raw counts if absent.
+    freq_source = out["violation_rate"] if "violation_rate" in out.columns else out["violations"]
+    freq_100 = _minmax_100(freq_source)
     crit_100 = (out["road_criticality"] * 100).clip(0, 100)
     pcii_100 = out["pcii"].clip(0, 100)
 

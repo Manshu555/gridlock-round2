@@ -27,8 +27,34 @@ except Exception:  # pragma: no cover - scipy should be present
 from .h3_index import neighbor_weights
 
 
-def gi_star(agg: pd.DataFrame, value_col: str = "violations", z_threshold: float = 1.96) -> pd.DataFrame:
-    """Compute Gi* z-scores, p-values and hotspot categories for each H3 cell."""
+def _gi_z(x: np.ndarray, nbrs: dict[str, list[str]], idx: dict[str, int]) -> np.ndarray:
+    """Core Gi* z-score computation for a value vector over a fixed adjacency graph."""
+    n = len(x)
+    xbar = x.mean()
+    s = np.sqrt(max((x**2).mean() - xbar**2, 1e-12))
+    z = np.zeros(n)
+    for c, neigh in nbrs.items():
+        i = idx[c]
+        j = np.array([idx[m] for m in neigh])
+        wsum = float(len(j))            # binary weights => Σ w = count, Σ w² = count
+        lag = x[j].sum()
+        denom = s * np.sqrt((n * wsum - wsum**2) / (n - 1))
+        z[i] = (lag - xbar * wsum) / denom if denom > 0 else 0.0
+    return z
+
+
+def gi_star(agg: pd.DataFrame, value_col: str = "violation_rate", z_threshold: float = 1.96) -> pd.DataFrame:
+    """Compute Gi* z-scores, p-values and hotspot categories for each H3 cell.
+
+    Defaults to the patrol-debiased ``violation_rate`` so hotspots reflect violation
+    *intensity* rather than enforcement effort. Falls back to raw ``violations`` when
+    the debiased column is absent. When debiased input is used, a raw-count Gi*
+    (``gi_z_raw``) is also stored for transparency / before-after comparison.
+    """
+    # Fall back to raw counts if the debiased rate hasn't been computed.
+    if value_col not in agg.columns:
+        value_col = "violations"
+
     cells = agg["h3"].tolist()
     x = agg[value_col].to_numpy(dtype=float)
     n = len(x)
@@ -39,22 +65,13 @@ def gi_star(agg: pd.DataFrame, value_col: str = "violations", z_threshold: float
         out["gi_p"] = 1.0
         out["hotspot_category"] = "Not Significant"
         out["hotspot_score"] = _minmax(x) * 100
+        out["is_hotspot"] = 0
         return out
-
-    xbar = x.mean()
-    s = np.sqrt(max((x**2).mean() - xbar**2, 1e-12))
 
     idx = {c: i for i, c in enumerate(cells)}
     nbrs = neighbor_weights(cells, k=1)
 
-    z = np.zeros(n)
-    for c, neigh in nbrs.items():
-        i = idx[c]
-        j = np.array([idx[m] for m in neigh])
-        wsum = float(len(j))            # binary weights => Σ w = count, Σ w² = count
-        lag = x[j].sum()
-        denom = s * np.sqrt((n * wsum - wsum**2) / (n - 1))
-        z[i] = (lag - xbar * wsum) / denom if denom > 0 else 0.0
+    z = _gi_z(x, nbrs, idx)
 
     p = 2.0 * _NORM_SF(np.abs(z))       # two-sided
     out["gi_z"] = z
@@ -63,6 +80,11 @@ def gi_star(agg: pd.DataFrame, value_col: str = "violations", z_threshold: float
     # 0-100 hotspot score: positive z scaled, clipped (cold spots -> low score)
     out["hotspot_score"] = (_minmax(np.clip(z, 0, None)) * 100).round(2)
     out["is_hotspot"] = (z >= z_threshold).astype(int)
+
+    # Transparency: also expose raw-count Gi* when we ranked on the debiased rate,
+    # so the demo can show that debiasing reorders the hotspots.
+    if value_col == "violation_rate" and "violations" in out.columns:
+        out["gi_z_raw"] = _gi_z(out["violations"].to_numpy(dtype=float), nbrs, idx)
     return out
 
 
@@ -90,8 +112,13 @@ def _minmax(a: np.ndarray) -> np.ndarray:
     return (a - lo) / (hi - lo)
 
 
-def morans_i(agg: pd.DataFrame, value_col: str = "violations") -> dict:
-    """Global Moran's I as a clustering-significance check (APPROACH.md §4.1)."""
+def morans_i(agg: pd.DataFrame, value_col: str = "violation_rate") -> dict:
+    """Global Moran's I as a clustering-significance check (APPROACH.md §4.1).
+
+    Prefers the debiased ``violation_rate``; falls back to raw ``violations``.
+    """
+    if value_col not in agg.columns:
+        value_col = "violations"
     cells = agg["h3"].tolist()
     x = agg[value_col].to_numpy(dtype=float)
     n = len(x)

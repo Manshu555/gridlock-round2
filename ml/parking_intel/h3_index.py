@@ -12,6 +12,7 @@ import h3
 from .config import (
     DEFAULT_FOOTPRINT,
     DEFAULT_SEVERITY,
+    PEAK_HOURS,
     VEHICLE_FOOTPRINT,
     VIOLATION_SEVERITY,
 )
@@ -41,6 +42,8 @@ def aggregate(df: pd.DataFrame) -> pd.DataFrame:
     df = df.copy()
     df["severity"] = df["violation_types"].apply(_severity)
     df["footprint"] = df["vehicle_type"].map(VEHICLE_FOOTPRINT).fillna(DEFAULT_FOOTPRINT)
+    # Flag peak-hour events so PCII can up-weight flow-relevant (rush-hour) parking
+    df["is_peak"] = df.get("hour", pd.Series(0, index=df.index)).isin(PEAK_HOURS).astype(int)
 
     n_days = max(df["date"].nunique(), 1)
 
@@ -50,6 +53,7 @@ def aggregate(df: pd.DataFrame) -> pd.DataFrame:
         severity_mean=("severity", "mean"),
         footprint_mean=("footprint", "mean"),
         near_junction_share=("near_junction", "mean"),
+        peak_hour_share=("is_peak", "mean"),
         active_days=("date", "nunique"),
         unique_vehicles=("vehicle_number", "nunique"),
         lat=("latitude", "mean"),
@@ -66,6 +70,11 @@ def aggregate(df: pd.DataFrame) -> pd.DataFrame:
 
     agg["temporal_persistence"] = (agg["active_days"] / n_days).clip(0, 1)
     agg["violations_per_day"] = agg["violations"] / n_days
+    # Repeat-offender ratio: high => few vehicles cited many times (chronic/structural);
+    # low => many distinct vehicles (transient). Useful enforcement-targeting signal.
+    agg["repeat_offender_ratio"] = (
+        agg["violations"] / agg["unique_vehicles"].clip(lower=1)
+    ).round(4)
 
     centroid = [h3.cell_to_latlng(c) for c in agg["h3"]]
     agg["cell_lat"] = [c[0] for c in centroid]

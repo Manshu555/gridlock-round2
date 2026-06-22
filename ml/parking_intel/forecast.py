@@ -104,7 +104,38 @@ def train_forecast(df_events: pd.DataFrame) -> tuple[object, dict, pd.DataFrame]
         "rmse": round(rmse, 4),
         "mase_vs_seasonal_naive": round(mase, 4),
     }
+
+    # Hotspot-classification framing: the actionable question is "is this cell a hotspot
+    # tomorrow?", so report threshold-based classifier metrics in addition to regression
+    # error (the panel is dominated by trivially-zero cells, which flatters MAE/MASE).
+    metrics.update(_hotspot_classification_metrics(train, test, pred))
     return model, metrics, test
+
+
+def _hotspot_classification_metrics(train: pd.DataFrame, test: pd.DataFrame,
+                                    pred: np.ndarray) -> dict:
+    """Evaluate the forecast as a hotspot (top-quintile) classifier on the test panel."""
+    try:
+        from sklearn.metrics import average_precision_score, f1_score, roc_auc_score
+    except Exception:
+        return {}
+    threshold = float(train["violations"].quantile(0.80))
+    y_true = (test["violations"].to_numpy() > threshold).astype(int)
+    positive_rate = float(y_true.mean())
+    out: dict = {
+        "hotspot_threshold": round(threshold, 4),
+        "hotspot_positive_rate": round(positive_rate, 4),
+    }
+    if y_true.sum() == 0 or y_true.sum() == len(y_true):
+        return out  # single-class test window -> AUC undefined
+    try:
+        out["hotspot_roc_auc"] = round(float(roc_auc_score(y_true, pred)), 4)
+        out["hotspot_pr_auc"] = round(float(average_precision_score(y_true, pred)), 4)
+        y_pred = (pred > threshold).astype(int)
+        out["hotspot_f1"] = round(float(f1_score(y_true, y_pred, zero_division=0)), 4)
+    except Exception:
+        pass
+    return out
 
 
 def shap_summary(model, sample: pd.DataFrame) -> dict | None:

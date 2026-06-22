@@ -18,15 +18,18 @@ from .config import DEFAULT_ROAD_CLASS, ROAD_CLASS_DEFAULTS
 
 
 def _fallback(agg: pd.DataFrame) -> pd.DataFrame:
-    """Offline heuristic: infer road class from junction proximity + violation intensity."""
+    """Offline heuristic: infer road class from junction proximity ONLY.
+
+    Deliberately does NOT use violation counts/intensity: deriving road criticality
+    from violations and then using it to rank violations would be circular. Junction
+    proximity is an independent structural signal, so the fallback stays defensible.
+    """
     out = agg.copy()
-    v = out["violations"].to_numpy(dtype=float)
-    vnorm = (v - v.min()) / (np.ptp(v) + 1e-9)
     classes = []
-    for share, vn in zip(out["near_junction_share"].to_numpy(), vnorm):
-        if share > 0.4 or vn > 0.75:
+    for share in out["near_junction_share"].to_numpy():
+        if share > 0.4:
             classes.append("primary")
-        elif share > 0.15 or vn > 0.4:
+        elif share > 0.15:
             classes.append("secondary")
         else:
             classes.append("tertiary")

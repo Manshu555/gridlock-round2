@@ -69,15 +69,27 @@ ROAD_CLASS_DEFAULTS: dict[str, dict[str, float]] = {
 }
 DEFAULT_ROAD_CLASS = "secondary"
 
+# ---------------------------------------------------------------------------
+# Peak hours: AM (7-10) and PM (16-19) rush. Parking here hurts traffic flow
+# far more than off-peak/night parking, so PCII up-weights peak concentration.
+# ---------------------------------------------------------------------------
+PEAK_HOURS: set[int] = set(range(7, 11)) | set(range(16, 20))
+
 
 @dataclass(frozen=True)
 class PCIIWeights:
-    """Proxy Congestion Impact Index weights (must sum to 1.0). APPROACH.md §6.2 / Phase 5."""
-    violation_density: float = 0.35
+    """Proxy Congestion Impact Index weights (must sum to 1.0). APPROACH.md §6.2 / Phase 5.
+
+    Rebalanced to answer the "impact on traffic FLOW" verb:
+    - violation_density reduced 0.35 -> 0.25 (less raw-count dominance)
+    - peak_hour_concentration (0.15) added so peak-time parking outranks night parking.
+    """
+    violation_density: float = 0.25
     road_capacity_reduction: float = 0.25
-    junction_importance: float = 0.20
+    junction_importance: float = 0.15
     vehicle_footprint: float = 0.10
     temporal_persistence: float = 0.10
+    peak_hour_concentration: float = 0.15
 
     def as_dict(self) -> dict[str, float]:
         return {
@@ -86,6 +98,7 @@ class PCIIWeights:
             "junction_importance": self.junction_importance,
             "vehicle_footprint": self.vehicle_footprint,
             "temporal_persistence": self.temporal_persistence,
+            "peak_hour_concentration": self.peak_hour_concentration,
         }
 
 
